@@ -1,0 +1,191 @@
+
+body{
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.logo img{
+  width: 45px;
+  height: 45px;
+}
+nav{
+  display: inline-flex;
+  justify-content: space-around;
+  width: 100%;
+  
+  border: 3px solid #F7E9E3;
+  background-color: white;
+}
+
+.sticky-nav {
+  position: fixed;
+  display: block;
+  width: 100%;
+  top: 0;
+}
+
+#menu-bar {
+  display: flex;
+  list-style-type: none;
+  flex-direction: row;
+}
+
+.logo, #menu-bar li{
+  margin: 10px;
+}
+a{
+  text-decoration: none;
+  color: black;
+
+}
+
+li a{
+  color: #6cc8c7;
+  font-size: 18px;
+}
+
+li a:hover {
+  font-weight: bold;
+}
+
+h1{
+  display: block;
+  color: #6cc8c7;
+  margin: 75px 0px 50px 0px;
+   padding: 25px;
+  text-align: center;
+
+}
+h2{
+  display: flex;
+  justify-content: center;
+  border: #F7E9E3 solid 2px;
+  background-color: #F7E9E3;
+
+}
+
+.competences{
+  display: flex;
+  justify-content: space-around;
+}
+
+footer{
+  margin: 0;
+}
+
+.aproposde{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#presentation, #CV{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  
+}
+article h3{
+  text-align: center;
+}
+#projects article {
+width: 1280px;}
+#presentation{
+  width:  40%;
+  height: 200px;
+}
+#CV{
+  width:  50%;
+  height: auto;
+  align-items: center;
+}
+#imgcv{
+  width:  100px;
+  height: auto;
+ }
+.myButton {
+  border: solid 1px #f7e9e3;
+	background-color:#f7e9e3;
+	border-radius:16px;
+	display:inline-block;
+	cursor:pointer;
+	color:#6cc8c7;
+	font-family:Georgia;
+  font-size:14px;
+	font-weight:bold;
+	font-style:italic;
+	padding:2px 12px;
+	text-decoration:none;
+}
+.myButton:hover {
+  color: #fdbfc1;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+/*=======================*\ Projet Webagency /*=======================*/
+#colonne{
+  display: flex;
+  flex-direction: row;
+}
+article{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 440px;
+  margin: 20px;
+
+}
+#projets img{
+  width: 440px;
+  height: auto;
+}
+
+.fa-html5{
+  font-size: 55px;
+  margin-left: 80px;
+  margin-right: 80px;
+  color:#e44d26;
+  font-weight: bolder;
+}
+.fa-css3-alt{
+  font-size: 55px;
+  margin-left: 80px;
+  margin-right: 80px;
+  color:#006eb9;
+  font-weight: bolder;
+}
+#projetwebagency h4{
+  margin-bottom: 0;
+}
+
+/*=======================*\ Me contacter /*=======================*/
+
+#contacte{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50px;
+  border: #f7e9e3;
+  background-color: #f7e9e3;
+  border-top:#6cc8c7 solid 1px;
+}
+.logosociaux{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 15px;
+  align-items: center;
+}
+.fa-linkedin-in, .fa-at, .fa-github, .fa-twitter{
+  font-size: 25px;
+  margin-left: 80px;
+  margin-right: 80px;
+  color:#6cc8c7;
+  font-weight: bolder;
+}
+
