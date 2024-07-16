@@ -16,7 +16,7 @@ export default function About() {
               professionnelle de Développeuse Web.
               <br /> Ainsi je suis actuellement une formation chez
               Openclassrooms tout en recherche un contract en alternance pour
-              septembre 2018.{' '}
+              janvier 2025.
             </p>
           </article>
 
