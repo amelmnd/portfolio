@@ -1,0 +1,113 @@
+---
+import Icon from '../assets/icons/css.astro';
+import { education, certificates } from "../../cv.json";
+---
+
+<section class="timeline">
+	<h2 class="timeline-heading">Formation</h2>
+  {education.map(({ institution, startDate, endDate, area, url }) => {
+    const startYear = new Date(startDate).getFullYear();
+    const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
+
+    return (
+      <div class="timeline-item">
+        <div class="timeline-date">
+          <time datetime={startDate}>{startYear}</time> - <time datetime={endDate}>{endYear}</time>
+        </div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">
+            {url ? (
+              <a href={url} class="institution-link" target="_blank">{institution}</a>
+            ) : (
+              <span>{institution}</span>
+            )}
+          </h3>
+          <p class="area">{area}</p>
+        </div>
+      </div>
+    );
+  })}
+
+  {certificates.length > 0 && (
+    <>
+      <h2 class="timeline-heading">Certifications</h2>
+      {certificates.map(({ name, date, issuer, url }) => {
+        const certYear = new Date(date).getFullYear();
+
+        return (
+          <div class="timeline-item">
+            <div class="timeline-date">
+              <time datetime={date}>{certYear}</time>
+            </div>
+            <div class="timeline-content">
+              <h3 class="timeline-title">
+                {url ? (
+                  <a href={url} class="certificate-link" target="_blank">{name}</a>
+                ) : (
+                  <span>{name}</span>
+                )}
+              </h3>
+              <p class="issuer">{issuer}</p>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  )}
+</section>
+
+<style>
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-left: 2px solid var(--gray-800);
+    padding-left: 2rem;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -0.75rem;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--accent-regular);
+    border-radius: 50%;
+  }
+
+  .timeline-date {
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    font-weight: bold;
+  }
+
+  .timeline-title {
+    font-size: var(--text-lg);
+    font-weight: bold;
+  }
+
+  .institution-link,
+  .certificate-link {
+    color: var(--accent-regular);
+    text-decoration: underline;
+  }
+
+  .area,
+  .issuer {
+    font-size: var(--text-sm);
+    color: var(--gray-300);
+  }
+
+  .timeline-heading {
+    margin-top: 2rem;
+    font-size: var(--text-xl);
+    font-weight: bold;
+    color: var(--gray-100);
+  }
+</style>

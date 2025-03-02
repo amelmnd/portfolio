@@ -144,13 +144,18 @@ const isCurrentPage = (href: string) => {
 		font-family: var(--font-brand);
 		font-weight: 500;
 		margin-bottom: 3.5rem;
+		position: fixed;
+		width: 100vw;
+		z-index: 1000;
+		top: 0px;
+		background-color: rgba(33, 33, 33, 0.314);
+		backdrop-filter: blur(6px);
 	}
 
 	.menu-header {
 		display: flex;
 		justify-content: space-between;
 		gap: 0.5rem;
-		padding: 1.5rem;
 	}
 
 	.site-title {
@@ -208,7 +213,7 @@ const isCurrentPage = (href: string) => {
 		line-height: 1.2;
 		list-style: none;
 		padding: 2rem;
-		background-color: var(--gray-999);
+		background-color: var(--gray-999);  /* couleur de fond de la nav */
 		border-bottom: 1px solid var(--gray-800);
 	}
 
@@ -286,18 +291,16 @@ const isCurrentPage = (href: string) => {
 			position: relative;
 			flex-direction: row;
 			font-size: var(--text-sm);
-			border-radius: 999rem;
+			border-radius: 9rem;
 			border: 0;
-			padding: 0.5rem 0.5625rem;
-			background: radial-gradient(var(--gray-900), var(--gray-800) 150%);
-			box-shadow: var(--shadow-md);
+			padding: 1rem ;
+			border-radius: 14px;
 		}
 
 		.nav-items::before {
 			position: absolute;
 			inset: -1px;
 			content: '';
-			background: var(--gradient-stroke);
 			border-radius: 999rem;
 			z-index: -1;
 		}

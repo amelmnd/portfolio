@@ -1,4 +1,4 @@
-# Astro Starter Kit: Portfolio
+<!-- # Astro Starter Kit: Portfolio
 
 ```sh
 npm create astro@latest -- --template portfolio
@@ -27,4 +27,21 @@ All commands are run from the root of the project, from a terminal:
 
 ## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat). -->
+
+# Portfolio 
+
+### TODO
+[] Traviller le style globale 
+[] Modifier les couleurs Dark et ligth
+[] correction d'orthographe
+[] Retraviller ou pas la home page
+[] Traviller le style globale 
+
+[] Faire le point sur les projets 
+[] Inclure au moins 4/5 projest projets 
+	[] Les mettre en lignes si besoin 
+	[] mettre au propre le readme
+
+
+

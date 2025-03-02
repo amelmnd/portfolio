@@ -21,9 +21,11 @@ const { title, description } = Astro.props;
 	</head>
 	<body>
 		<div class="stack backgrounds">
-			<Nav />
-			<slot />
-			<Footer />
+			<div class="content">
+				<Nav />
+				<slot />
+				<Footer />
+			</div>
 		</div>
 
 		<script>
@@ -89,7 +91,8 @@ const { title, description } = Astro.props;
 			}
 
 			.backgrounds {
-				min-height: 100%;
+				padding-top: 100px;
+				min-height: 100wv;
 				isolation: isolate;
 				background:
 					/*noise*/
@@ -113,6 +116,7 @@ const { title, description } = Astro.props;
 					--bg-gradient-size: none;
 				}
 			}
+			.content { padding-top : 120px}
 		</style>
 	</body>
 </html>
