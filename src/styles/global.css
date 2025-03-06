@@ -17,6 +17,9 @@
 	--gray-999-basis: 0, 0%, 100%;
 	--gray-999_40: hsla(var(--gray-999-basis), 0.4);
 	--gray-999: #ffffff;
+	--white-black-50: rgba(255, 255, 255, 0.5);
+	--white-black-100: rgba(255, 255, 255, 1);
+
 
 	--accent-light: #c561f6;
 	--accent-regular: #7611a6;
@@ -89,6 +92,8 @@
 	--gray-900: #141925;
 	--gray-999-basis: 225, 31%, 5%;
 	--gray-999: #090b11;
+	--white-black-50: rgba(0, 0, 0, 0.5);
+	--white-black-100: rgba(0, 0, 0, 1);
 
 	--accent-light: #1c0056;
 	--accent-regular: #7611a6;
