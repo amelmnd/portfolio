@@ -1,0 +1,67 @@
+---
+const {width, height} = Astro.props;
+const socialLinks = [
+	{
+		title: 'LinkedIn',
+		icon: 'simple-icons:linkedin',
+		href: 'https://www.linkedin.com/in/amel-mennad/',
+
+	},
+	{
+		title: 'GitHub',
+		icon: 'simple-icons:github',
+		href: 'https://github.com/amelmnd',
+
+	},
+	{
+		title: 'CodePen',
+		icon: 'simple-icons:codepen',
+		href: 'https://codepen.io/amel_dev',
+	},
+];
+---
+
+<div class="icons__container">
+    {
+        socialLinks.map((data) => (
+            <a
+                href={data.href}
+                target="_blank"
+                rel="nofollow noreferrer noopener"
+            >
+                <iconify-icon
+					class=`skill__icon ${data.title}`
+                    icon={data.icon}
+                    width={width}
+                    height={height}
+                />
+            </a>
+        ))
+    }
+</div>
+
+<style>
+	.icons__container {
+		display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+	}
+	.skill__icon{
+		color:#dcd8fc;
+	}
+
+	.skill__icon:hover{
+		background-color: #FFF;
+		border-radius: 50%;
+	}
+	.LinkedIn:hover{
+		color: #0e76a8;
+	}
+	.GitHub:hover{
+		color: #000;
+	}
+	.CodePen:hover{
+		color:#2D2D39;
+	}
+</style>

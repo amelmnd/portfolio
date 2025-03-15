@@ -1,8 +1,11 @@
 ---
-import Hero from '../components/Hero.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Boton from "../components/atoms/Boton.astro";
+import Layout from "../layouts/Layout.astro";
+
+
 ---
 
-<BaseLayout title="Not Found" description="404 Error — this page was not found">
-	<Hero title="Page Not Found" tagline="Not found" />
-</BaseLayout>
+<Layout title="Pagina no encontrada">
+        <h1 class="text-xl">Pagina no encontrada</h1>
+        <Boton texto="Regresar" href="/"/>
+</Layout>
