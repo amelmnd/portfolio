@@ -1,0 +1,30 @@
+.iconsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.skillIcon {
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.iconLink:hover .skillIcon {
+  background-color: var(--background);
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+
+/* Couleurs personnalisées inspirées de Cyan Radix UI */
+.LinkedIn:hover .skillIcon {
+  color: #00b3a4; /* cyan-9 radix */
+}
+
+.GitHub:hover .skillIcon {
+  color: #0a0a0a; /* GitHub classique */
+}
+
+.CodePen:hover .skillIcon {
+  color: #2D2D39;
+}

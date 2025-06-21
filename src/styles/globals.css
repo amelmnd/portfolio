@@ -1,0 +1,34 @@
+@import './variables.css';
+
+/* Light mode par défaut */
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Pacifico', sans-serif;
+}
+
+/* Exemples d'utilisation */
+h1, h2, h3 {
+  color: var(--titles);
+}
+
+a {
+  color: var(--links);
+}
+
+button {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border-radius: 8px;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--button-text);
+  color: var(--button-bg);
+  border: 1px solid var(--button-bg);
+}

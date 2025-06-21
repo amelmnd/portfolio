@@ -1,0 +1,21 @@
+import '../styles/globals.css'
+
+export const metadata = {
+  title: 'Amel M - Portfolio',
+  description: 'Portfolio personnel en Next.js',
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="fr">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU&family=Lora&family=Montserrat&display=swap" rel="stylesheet" />
+      </head>
+      <body>
+        {children}
+      </body>
+    </html>
+  )
+}

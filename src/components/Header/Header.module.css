@@ -1,0 +1,54 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.link {
+  font-family: 'Playwrite HU', serif;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.toggleButton {
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--link);
+  transition: color 0.3s ease;
+}
+
+.toggleButton:hover {
+  color: var(--link-hover);
+}
+
+.active {
+  color: var(--link-hover);
+  text-decoration: underline;
+}

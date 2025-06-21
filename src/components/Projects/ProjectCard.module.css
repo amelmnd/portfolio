@@ -1,0 +1,74 @@
+.cardPortfolio {
+	background-color: var(--card-bg);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 1rem;
+	overflow: hidden;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	width: 432px;
+	height: 346px;
+}
+
+.cardPortfolio img {
+	object-position: center 50%;
+	height: 160px;
+	width: 100%;
+	object-fit: cover;
+	border-bottom: 1px solid var(--border);
+}
+
+.descripcionContainer {
+	padding: 1rem;
+	padding-top: 0;
+}
+
+.cardTitle {
+	font-size: 1.5rem;
+	color: var(--heading);
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+.descripcion p {
+	margin-bottom: 1rem;
+	line-height: 1.5;
+}
+
+.skills {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-bottom: 1rem;
+}
+
+.iconify {
+	font-size: 0.5rem;
+	color: var(--link);
+	transition: color 0.3s ease;
+}
+
+.iconify:hover {
+	color: var(--link-hover);
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+	justify-content: end;
+}
+
+.buttons a {
+	color: var(--button-text);
+	padding: 0.4rem 0.8rem;
+	border-radius: 0.5rem;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	font-weight: 500;
+	transition: background-color 0.3s ease;
+	font-size: 0.85rem;
+}
+
+.buttons a:hover {
+	background-color: var(--button-bg);
+}

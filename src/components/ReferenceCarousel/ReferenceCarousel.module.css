@@ -1,0 +1,63 @@
+.title {
+  font-family: 'Playwrite HU', serif;
+  color: var(--heading);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--heading);
+}
+
+
+
+.header p {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.carouselContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.quoteCard {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.quoteText {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.quoteAuthor {
+  font-weight: bold;
+  color: var(--heading);
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--button-text);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navButton:hover {
+  color: var(--link-hover);
+}

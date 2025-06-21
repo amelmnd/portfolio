@@ -1,0 +1,79 @@
+.hero {
+  padding: 4rem 2rem;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 900px;
+  text-align: center;
+}
+
+.content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.heroContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.textContent {
+  flex: 1;
+  min-width: 300px;
+  color: var(--text);
+}
+
+.heroText {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--heading);
+  font-family: 'Playwrite HU', serif;
+}
+
+.heroSoftSkill {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.heroDescript {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.pill {
+  background-color: var(--card-bg);
+  color: var(--heading);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.heroImg {
+  border-radius: 1rem;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon {
+  vertical-align: middle;
+}
