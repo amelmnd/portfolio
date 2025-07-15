@@ -34,7 +34,8 @@
       "summary": "Contrat en alternance en développement logiciel, participation à divers projets de développement.",
       "highlights": [],
       "responsibilities": [],
-      "skills": []
+      "skills": [],
+      "active": true
     },
     {
       "name": "Livmed's",
@@ -65,7 +66,8 @@
         "Analyse des besoins",
         "Node.js",
         "Bases de données"
-      ]
+      ],
+      "active": true
     },
     {
       "name": "Frips",
@@ -80,7 +82,8 @@
         "Développement complet d’une application mobile en React Native",
         "Analyse des besoins et gestion de bases de données"
       ],
-      "skills": ["React Native", "Analyse des besoins", "Bases de données"]
+      "skills": ["React Native", "Analyse des besoins", "Bases de données"],
+      "active": true
     },
     {
       "name": "DropTeam",
@@ -107,7 +110,8 @@
         "Programmation web",
         "GitHub",
         "Analyse des besoins"
-      ]
+      ],
+      "active": true
     }
   ],
   "education": [
@@ -118,7 +122,8 @@
       "studyType": "Formation en cours",
       "startDate": "2023-03-01",
       "endDate": "2026-12-01",
-      "summary": "Compétences en C, Linux, apprentissage collaboratif, Git, C++, Docker."
+      "summary": "Compétences en C, Linux, apprentissage collaboratif, Git, C++, Docker.",
+      "active": true
     },
     {
       "institution": "42 Nice",
@@ -127,7 +132,8 @@
       "studyType": "Piscine de l'école 42",
       "startDate": "2023-02-01",
       "endDate": "2023-02-28",
-      "summary": "Base de développement en C. Programmation web, apprentissage collaboratif, Git."
+      "summary": "Base de développement en C. Programmation web, apprentissage collaboratif, Git.",
+      "active": false
     },
     {
       "institution": "Chance",
@@ -136,7 +142,8 @@
       "studyType": "Bilan personnel",
       "startDate": "2022-01-01",
       "endDate": "2023-12-31",
-      "summary": "Diagnostic, introspection, exploration et mise en place d'un plan d'action professionnel."
+      "summary": "Diagnostic, introspection, exploration et mise en place d'un plan d'action professionnel.",
+      "active": false
     },
     {
       "institution": "Le Reacteur",
@@ -154,7 +161,8 @@
         "JavaScript",
         "MongoDB",
         "React.js"
-      ]
+      ],
+      "active": true
     },
     {
       "institution": "Trained People",
@@ -164,7 +172,8 @@
       "startDate": "2019-01-01",
       "endDate": "2019-12-31",
       "summary": "Modules variés sur Drupal (front, back, avancé), Git, Docker, Composer, sécurité, déploiement, projet en équipe et insertion en entreprise.",
-      "skills": ["Drupal", "JavaScript", "Docker"]
+      "skills": ["Drupal", "JavaScript", "Docker"],
+      "active": true
     },
     {
       "institution": "3W Academy",
@@ -184,7 +193,8 @@
         "PHP",
         "PhpMyAdmin",
         "CSS3"
-      ]
+      ],
+      "active": true
     },
     {
       "institution": "OpenClassrooms",
@@ -194,7 +204,8 @@
       "startDate": "2018-01-01",
       "endDate": "2018-12-31",
       "summary": "Intégration HTML5/CSS, animation CSS3, standards web, responsive design, SEO.",
-      "skills": ["Programmation web", "HTML", "JavaScript"]
+      "skills": ["Programmation web", "HTML", "JavaScript"],
+      "active": false
     },
     {
       "institution": "Université Blaise Pascal (Clermont-II)",
@@ -202,7 +213,8 @@
       "area": "Licence, Biologie, général",
       "studyType": "Licence",
       "startDate": "2014-01-01",
-      "endDate": "2017-12-31"
+      "endDate": "2017-12-31",
+      "active": false
     },
     {
       "institution": "Lycée Polyvalent Etienne Jules Marey, Boulogne Billancourt",
@@ -210,7 +222,8 @@
       "area": "Baccalauréat, Sciences et Technologies de la Santé et du Social",
       "studyType": "Baccalauréat",
       "startDate": "2008-01-01",
-      "endDate": "2010-12-31"
+      "endDate": "2010-12-31",
+      "active": false
     },
     {
       "institution": "Lycee Professionnel Vassily Kandinsky, Neuilly-sur-Seine",
@@ -218,7 +231,8 @@
       "area": "BEP, Carrières Sanitaires et Sociales",
       "studyType": "BEP",
       "startDate": "2006-01-01",
-      "endDate": "2008-12-31"
+      "endDate": "2008-12-31",
+      "active": false
     }
   ],
 
@@ -226,27 +240,22 @@
   "skills": [
     {
       "name": "JavaScript",
-      "level": "Intermediate",
       "keywords": ["React", "Angular", "TypeScript", "Next.js", "Node.js"]
     },
     {
       "name": "React Native",
-      "level": "Intermediate",
       "keywords": []
     },
     {
       "name": "PHP",
-      "level": "Intermediate",
       "keywords": ["Drupal", "Composer"]
     },
     {
       "name": "Agile",
-      "level": "Intermediate",
       "keywords": ["JIRA", "Confluence"]
     },
     {
       "name": "DevOps",
-      "level": "Basic",
       "keywords": ["Docker", "Git", "GitHub", "GitLab"]
     }
   ],
@@ -257,7 +266,7 @@
     },
     {
       "language": "Anglais",
-      "fluency": "Professional Working"
+      "fluency": "Professionnel"
     }
   ]
 }

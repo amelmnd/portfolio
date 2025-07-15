@@ -12,41 +12,8 @@
   margin-bottom: 1.5rem;
 }
 
-.form {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.input {
-  flex: 1 1 250px;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+.textContent {
+  flex: 1;
+  min-width: 300px;
   color: var(--text);
-  background-color: var(--card-bg);
-}
-
-.input::placeholder {
-  color: var(--border);
-}
-
-.button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.button:hover {
-  background-color: var(--button-text);
-  color: var(--button-bg);
 }

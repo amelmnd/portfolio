@@ -32,3 +32,10 @@ button:hover {
   color: var(--button-bg);
   border: 1px solid var(--button-bg);
 }
+
+.title {
+  font-family: 'Playwrite HU', serif;
+  color: var(--heading);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}

@@ -13,7 +13,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        {/* <Skills /> */}
+        {/*<Skills /> */}
         {/* <Projects /> */}
         <EducationTimeline />
         <WorkTimeline />
