@@ -15,7 +15,8 @@ export default function EducationTimeline() {
 
   // Trier par date de début décroissante
   const events = education
-    .map(item => ({
+    .filter((item) => item.active) // Garde uniquement les éléments actifs
+    .map((item) => ({
       ...item,
       startDateFormatted: parseDate(item.startDate),
       endDateFormatted: parseDate(item.endDate),
@@ -35,17 +36,6 @@ export default function EducationTimeline() {
               </p>
             </div>
             <p><strong>{event.studyType}</strong> - {event.area}</p>
-            {event.summary && <p>{event.summary}</p>}
-            {event.courses && event.courses.length > 0 && (
-              <p>
-                <strong>Cours :</strong> {event.courses.join(', ')}
-              </p>
-            )}
-            {event.skills && event.skills.length > 0 && (
-              <p>
-                <strong>Compétences :</strong> {event.skills.join(', ')}
-              </p>
-            )}
           </div>
         ))}
       </div>

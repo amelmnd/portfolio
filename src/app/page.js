@@ -4,9 +4,8 @@ import Skills from '../components/Skills/Skills'
 import Projects from '../components/Projects/Projects'
 import Contact from '../components/Contact/Contact'
 import ReferenceCarousel from '../components/ReferenceCarousel/ReferenceCarousel'
-import WorkTimeline from '../components/WorkTimeline/WorkTimeline'
+import Timeline from '../components/Timeline/Timeline'
 import EducationTimeline from '@/components/EducationTimeline/EducationTimeline'
-
 export default function Home() {
   return (
     <>
@@ -15,8 +14,7 @@ export default function Home() {
         <Hero />
         {/*<Skills /> */}
         {/* <Projects /> */}
-        <EducationTimeline />
-        <WorkTimeline />
+        <Timeline />
         <ReferenceCarousel />
         <Contact />
       </main>
