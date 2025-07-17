@@ -1,9 +1,9 @@
 /* Variables light mode par défaut */
 :root {
-  --background: #FAF8F5;
+  --background: #FFF;
   --text: #3A3A3A;
-  --heading: #5A4E3C;
-  --link: #373637;
+  --heading: #212336;
+  --link: #363637;
   --link-hover: #A89F91;
   --button-bg: #D8CFC4;
   --button-text: #5C4B51;
