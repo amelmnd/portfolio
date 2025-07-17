@@ -5,19 +5,18 @@ import Projects from '../components/Projects/Projects'
 import Contact from '../components/Contact/Contact'
 import ReferenceCarousel from '../components/ReferenceCarousel/ReferenceCarousel'
 import Timeline from '../components/Timeline/Timeline'
-import EducationTimeline from '@/components/EducationTimeline/EducationTimeline'
 export default function Home() {
   return (
     <>
       <Header />
       <main>
         <Hero />
-        {/*<Skills /> */}
+        {/* <Skills />
         {/* <Projects /> */}
         <Timeline />
         <ReferenceCarousel />
         <Contact />
       </main>
     </>
-  )
+  );
 }
