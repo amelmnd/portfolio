@@ -13,17 +13,27 @@
 .iconLink:hover .skillIcon {
   background-color: var(--background);
   padding: 0.2rem;
+  border-radius: 7%;
 }
 
-/* Couleurs personnalisées inspirées de Cyan Radix UI */
+.Email:hover .skillIcon {
+  color: #000;
+}
 .LinkedIn:hover .skillIcon {
-  color: #00b3a4; /* cyan-9 radix */
+  color: #0A66C2;
 }
-
 .GitHub:hover .skillIcon {
-  color: #0a0a0a; /* GitHub classique */
+  color: #0a0a0a;
 }
-
 .CodePen:hover .skillIcon {
   color: #2D2D39;
+}
+.Freecodecamp:hover .skillIcon {
+  color: #2F5C04;
+}
+.Codingame:hover .skillIcon {
+  color: #F2BB13;
+}
+.Hackerrank:hover .skillIcon {
+  color: #02E963;
 }
