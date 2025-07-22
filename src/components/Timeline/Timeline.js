@@ -40,8 +40,8 @@ export default function Timeline() {
     .filter((item) => item.active)
     .map((item) => ({
       ...item,
-      title: item.position,
-      subtitle: item.name,
+      title: item.name,
+      subtitle: item.position,
       location: item.location || '—',
       type: 'work',
     }));

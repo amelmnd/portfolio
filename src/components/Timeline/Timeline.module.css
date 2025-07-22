@@ -148,16 +148,19 @@
 }
 
 .timielineTitle {
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: bold;
   color: var(--heading);
   margin-bottom: 10px;
+	font-family: 'Playwrite HU', serif;
 }
 
 .timelineSubtitle {
   font-size: 1.1em;
   font-style: oblique;
   font-weight: 700;
+  font-family: 'Playwrite HU', serif;
+
 }
 
 .timelineLocation {
