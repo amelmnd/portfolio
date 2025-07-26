@@ -56,6 +56,7 @@ export default function Timeline() {
   const workEvents = work
     .filter(item => item.active)
     .map(item => ({
+      ...item,
       id: item.id,
       type: 'work',
       title: item.enterpriseName,
@@ -67,6 +68,7 @@ export default function Timeline() {
   const educationEvents = education
     .filter(item => item.active)
     .map(item => ({
+      ...item,
       id: item.id,
       type: 'education',
       title: item.studyType,
@@ -88,7 +90,7 @@ export default function Timeline() {
   };
 
   return (
-    <section className={styles.working} id='timeline'>
+    <section className={styles.working} id='working'>
       <h2 className={styles.title}>Mon Parcours</h2>
       <p className={styles.textContent}>
         Mon parcours depuis mon entrer dans le monde du développement je tests
