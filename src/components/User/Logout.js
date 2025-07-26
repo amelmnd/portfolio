@@ -1,1 +1,0 @@
-await supabase.auth.signOut();
