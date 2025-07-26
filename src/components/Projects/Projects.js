@@ -1,38 +1,26 @@
-import Link from 'next/link'
-import ProjectCard from './ProjectCard'
-import styles from './Projects.module.css'
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import ProjectCard from './ProjectCard';
+import styles from './Projects.module.css';
+import { supabase } from '../../lib/supabaseClient';
 
 export default function Projects() {
-  const projects = [
-    {
-      id: 1,
-      title: 'Portfolio Personnel',
-      url: 'https://amel.dev',
-      image: 'publicimgpaisaje.jpg',
-      tech: ['React', 'TailwindCSS', 'Framer Motion'],
-    },
-    {
-      id: 2,
-      title: 'Application météo',
-      url: 'https://weather-app.dev',
-      image: 'https://source.unsplash.com/600x400/?weather,app',
-      tech: ['React', 'API REST', 'Styled Components'],
-    },
-    {
-      id: 3,
-      title: 'Plateforme e-commerce',
-      url: 'https://shop-demo.dev',
-      image: 'https://source.unsplash.com/600x400/?ecommerce,website',
-      tech: ['Next.js', 'Stripe', 'Sanity CMS'],
-    },
-    {
-      id: 4,
-      title: 'Dashboard Analytics',
-      url: 'https://dashboard-demo.dev',
-      image: 'https://source.unsplash.com/600x400/?dashboard,analytics',
-      tech: ['Vue.js', 'Chart.js', 'Firebase'],
-    },
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase.from('projects').select('*');
+      console.log('Données Supabase:', data);
+      console.log('Erreur Supabase:', error);
+      setProjects(data || []);
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
 
   return (
     <section className={styles.projects} id='projects'>
@@ -51,19 +39,25 @@ export default function Projects() {
         idées.
       </p>
       <div className={styles.grid}>
-        {projects.map((project, index) => (
-          <ProjectCard
-            key={index}
-            title='Clone Netflix'
-            descripcion='Reproduction du design de Netflix avec React et Firebase.'
-            imgSrc='.\img\paisaje.jpg'
-            skills={['React', 'Firebase', 'CSS']}
-            repoURL='https://github.com/amelmnd/netflix-clone'
-            demoURL='https://netflix-clone.vercel.app'
-          />
-        ))}
+        {loading ? (
+          <p>Chargement des projets...</p>
+        ) : projects.length === 0 ? (
+          <p>Aucun projet trouvé.</p>
+        ) : (
+          projects?.map((project, index) => {
+            console.log(project.date);
+            console.log(project.title);
+            console.log(project.descripcion);
+            console.log(project.repoURL);
+            console.log(project.demoURL);
+            return (
+              <div key={index}>
+                <p> {project.title}</p>
+              </div>
+            );
+          })
+        )}
       </div>
     </section>
   );
 }
-
