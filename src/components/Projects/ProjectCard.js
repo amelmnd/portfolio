@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './ProjectCard.module.css';
 
@@ -9,6 +12,18 @@ export default function ProjectCard({
   repoURL,
   demoURL,
 }) {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const res = await fetch('/api/cloudinary?folder=home'); // remplace "home" par ton chemin Cloudinary
+      const data = await res.json();
+      setImages(data);
+    };
+
+    fetchImages();
+  }, []);
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>

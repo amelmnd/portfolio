@@ -51,9 +51,15 @@ export default function Projects() {
             console.log(project.repoURL);
             console.log(project.demoURL);
             return (
-              <div key={index}>
-                <p> {project.title}</p>
-              </div>
+                <ProjectCard
+                  key={index}
+                  title={project.title}
+                  descripcion={project.descripcion}
+                  imgSrc={project.imgSrc}
+                  skills={[]}
+                  repoURL={project.repoURL}
+                  demoURL={project.demoURL}
+                />
             );
           })
         )}
