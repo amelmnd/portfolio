@@ -1,7 +1,7 @@
 'use client';
-import React, { useRef } from 'react';
-import styles from './Timeline.module.css'; // Utilise un fichier CSS commun
-import cvData from '../../assets/cv.json';
+import React, { useEffect, useState, useRef } from 'react';
+import { supabase } from '../../lib/supabaseClient';
+import styles from './Timeline.module.css';
 import { Icon } from '@iconify/react';
 
 const parseDate = (dateStr) => {
@@ -33,33 +33,52 @@ const TimelineItem = ({
 );
 
 export default function Timeline() {
-  const { work = [], education = [] } = cvData;
+  const [work, setWork] = useState([]);
+  const [education, setEducation] = useState([]);
   const timelineRef = useRef(null);
 
+  useEffect(() => {
+    async function fetchData() {
+      const { data: workData, error: workError } = await supabase.from('work').select('*');
+      console.log('workData:', workData);
+      console.log('workError:', workError);
+      setWork(workData || []);
+
+      const { data: educationData, error: educationError } = await supabase.from('education').select('*');
+      console.log('educationData:', educationData);
+      console.log('educationError:', educationError);
+      setEducation(educationData || []);
+
+    }
+    fetchData();
+  }, []);
+
   const workEvents = work
-    .filter((item) => item.active)
-    .map((item) => ({
-      ...item,
-      title: item.name,
-      subtitle: item.position,
-      location: item.location || '—',
+    .filter(item => item.active)
+    .map(item => ({
+      id: item.id,
       type: 'work',
+      title: item.enterpriseName,
+      subtitle: item.job,
+      endDate: item.endDate || '...',
+      location: item.location || '—',
     }));
 
   const educationEvents = education
-    .filter((item) => item.active)
-    .map((item) => ({
-      ...item,
+    .filter(item => item.active)
+    .map(item => ({
+      id: item.id,
+      type: 'education',
       title: item.studyType,
       subtitle: item.institution,
-      location: item.area || '—',
-      type: 'education',
+      endDate: item.endDate || '...',
+      location: item.location || '—',
     }));
 
   const allEvents = [...workEvents, ...educationEvents].sort(
     (a, b) => new Date(b.startDate) - new Date(a.startDate)
   );
-
+  console.log(allEvents)
   const scroll = (direction) => {
     if (!timelineRef.current) return;
     timelineRef.current.scrollBy({
@@ -88,7 +107,8 @@ export default function Timeline() {
               startDate={event.startDate}
               endDate={event.endDate}
               location={event.location}
-              type={event.type} // "work" ou "education"
+              type={event.type}
+              skills={event.skills}
             />
           ))}
         </div>
