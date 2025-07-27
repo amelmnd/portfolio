@@ -6,7 +6,7 @@ import { supabase } from '../../lib/supabaseClient';
 export default function AddProjectForm() {
   const [form, setForm] = useState({
     title: '',
-    descripcion: '',
+    description: '',
     repoURL: '',
     demoURL: '',
     image: null,
@@ -52,7 +52,7 @@ export default function AddProjectForm() {
       const { error } = await supabase.from('projects').insert([
         {
           title: form.title,
-          descripcion: form.descripcion,
+          description: form.description,
           repoURL: form.repoURL,
           demoURL: form.demoURL,
           imgSrc: cloudinaryData.secure_url, // URL de l’image uploadée
@@ -66,7 +66,7 @@ export default function AddProjectForm() {
         alert('Projet ajouté avec succès ✅');
         setForm({
           title: '',
-          descripcion: '',
+          description: '',
           repoURL: '',
           demoURL: '',
           image: null,
@@ -99,9 +99,9 @@ export default function AddProjectForm() {
         required
       />
       <textarea
-        name='descripcion'
+        name='description'
         placeholder='Description'
-        value={form.descripcion}
+        value={form.description}
         onChange={handleChange}
         required
       />

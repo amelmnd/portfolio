@@ -47,15 +47,16 @@ export default function Projects() {
           projects?.map((project, index) => {
             console.log(project.date);
             console.log(project.title);
-            console.log(project.descripcion);
+            console.log(project.description);
             console.log(project.repoURL);
             console.log(project.demoURL);
+            console.log("imgSrc", project.imgLink);
             return (
                 <ProjectCard
                   key={index}
                   title={project.title}
-                  descripcion={project.descripcion}
-                  imgSrc={project.imgSrc}
+                description={project.description}
+                imgSrc={project.imgLink}
                   skills={[]}
                   repoURL={project.repoURL}
                   demoURL={project.demoURL}

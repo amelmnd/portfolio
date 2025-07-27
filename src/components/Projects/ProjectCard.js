@@ -6,7 +6,7 @@ import styles from './ProjectCard.module.css';
 
 export default function ProjectCard({
   title,
-  descripcion,
+  description,
   imgSrc,
   skills,
   repoURL,
@@ -18,6 +18,7 @@ export default function ProjectCard({
     const fetchImages = async () => {
       const res = await fetch('/api/cloudinary?folder=home'); // remplace "home" par ton chemin Cloudinary
       const data = await res.json();
+      console.log("cloudinar", data);
       setImages(data);
     };
 
@@ -31,7 +32,7 @@ export default function ProjectCard({
       </div>
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>
-        <p className={styles.description}>{descripcion}</p>
+        <p className={styles.description}>{description}</p>
         <div className={styles.skills}>
           {skills.map((skill, index) => (
             <span key={index} className={styles.skill}>

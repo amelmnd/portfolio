@@ -1,3 +1,6 @@
+import { AuthProvider } from '../components/AdminDasboard/AuthProvider'
+import Header from '../components/Header/Header'
+
 import '../styles/globals.css'
 
 export const metadata = {
@@ -14,7 +17,11 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU&family=Lora&family=Montserrat&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {children}
+        <Header />
+
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )
