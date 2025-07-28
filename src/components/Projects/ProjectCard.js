@@ -13,7 +13,7 @@ export default function ProjectCard({
   demoURL,
 }) {
   const [images, setImages] = useState([]);
-
+  console.log(repoURL)
   useEffect(() => {
     const fetchImages = async () => {
       const res = await fetch('/api/cloudinary?folder=home'); // remplace "home" par ton chemin Cloudinary
@@ -34,17 +34,17 @@ export default function ProjectCard({
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.description}>{description}</p>
         <div className={styles.skills}>
-          {skills.map((skill, index) => (
+          {skills?.map((skill, index) => (
             <span key={index} className={styles.skill}>
               {skill}
             </span>
           ))}
         </div>
         <div className={styles.links}>
-          <Link href={repoURL} target='_blank' className={styles.button}>
+          <Link href={repoURL || ''} target='_blank' className={styles.button}>
             Code
           </Link>
-          <Link href={demoURL} target='_blank' className={styles.button}>
+          <Link href={demoURL || ''} target='_blank' className={styles.button}>
             Demo
           </Link>
         </div>
