@@ -16,8 +16,7 @@ export default function ProjectCard({
   console.log(repoURL)
   useEffect(() => {
     const fetchImages = async () => {
-      const res = await fetch('/api/cloudinary?folder=home'); // remplace "home" par ton chemin Cloudinary
-      const data = await res.json();
+      const res = await fetch('/api/cloudinary?folder=apiProjectsPortfolio');
       console.log("cloudinar", data);
       setImages(data);
     };

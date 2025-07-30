@@ -77,3 +77,8 @@
 .icon {
   vertical-align: middle;
 }
+@media (max-width: 768px) {
+  .heroImg {
+    display: none;
+  }
+}
