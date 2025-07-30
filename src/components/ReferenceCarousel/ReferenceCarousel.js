@@ -1,5 +1,7 @@
+// components/ReferenceCarousel.jsx
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Carousel from '../Carousel/Carousel';
 import styles from './ReferenceCarousel.module.css';
 
 const quotes = [
@@ -19,40 +21,27 @@ const quotes = [
 ];
 
 export default function ReferenceCarousel() {
-	const [currentIndex, setCurrentIndex] = useState(0);
+  return (
+    <section className={styles.carouselSection} id='ref'>
+      <header className={styles.header}>
+        <h2 className={styles.title}>Références</h2>
+        <p>Ce que mes collègues disent de moi</p>
+      </header>
 
-	const nextQuote = () => {
-		setCurrentIndex((prevIndex) => (prevIndex + 1) % quotes.length);
-	};
-
-	const prevQuote = () => {
-		setCurrentIndex((prevIndex) =>
-			prevIndex === 0 ? quotes.length - 1 : prevIndex - 1
-		);
-	};
-
-	useEffect(() => {
-		const interval = setInterval(nextQuote, 6000);
-		return () => clearInterval(interval);
-	}, []);
-
-	return (
-		<section className={styles.carouselSection} id="ref">
-			<header className={styles.header}>
-				<h2 className={styles.title}>Références</h2>
-				<p>Ce que mes collègues disent de moi</p>
-			</header>
-
-			<div className={styles.carouselContainer}>
-				<button className={styles.navButton} onClick={prevQuote}>‹</button>
-
-				<div className={styles.quoteCard}>
-					<p className={styles.quoteText}>{quotes[currentIndex].text}</p>
-					<p className={styles.quoteAuthor}>{quotes[currentIndex].author}</p>
-				</div>
-
-				<button className={styles.navButton} onClick={nextQuote}>›</button>
-			</div>
-		</section>
-	);
+      <Carousel
+        items={quotes}
+        classNames={{
+          container: styles.carouselContainerRef,
+          card: styles.quoteCardRef,
+          navButton: styles.navButtonRef,
+        }}
+        renderItem={(quote) => (
+          <article>
+            <blockquote className={styles.quoteText}>{quote.text}</blockquote>
+            <footer className={styles.quoteAuthor}>{quote.author}</footer>
+          </article>
+        )}
+      />
+    </section>
+  );
 }

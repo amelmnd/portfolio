@@ -1,3 +1,12 @@
+/* ReferenceCarousel.module.css */
+
+.carouselSection{
+    max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+    scroll-margin-top: 120px;
+
+}
 .title {
   font-family: 'Playwrite HU', serif;
   color: var(--heading);
@@ -17,15 +26,7 @@
   color: var(--text);
 }
 
-.carouselContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  position: relative;
-}
-
-.quoteCard {
+.card {
   background-color: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 1rem;
@@ -34,28 +35,24 @@
   text-align: center;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
-
-.quoteText {
-  font-size: 1rem;
+.carouselContainerRef {
+  justify-content: center;
+  padding: 1rem;
   color: var(--text);
-  margin-bottom: 1rem;
 }
 
-.quoteAuthor {
-  font-weight: bold;
-  color: var(--heading);
+.quoteCardRef {
+  background-color: var(--card-bg);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
 }
 
-.navButton {
-  background: none;
-  border: none;
+.navButtonRef {
   font-size: 2rem;
   color: var(--button-text);
-  cursor: pointer;
-  transition: color 0.2s ease;
 }
 
-.navButton:hover {
-  color: var(--link-hover);
-  
+.quoteAuthor{
+  font-family: 'Playwrite HU', serif;
 }

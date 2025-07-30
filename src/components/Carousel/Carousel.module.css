@@ -1,0 +1,33 @@
+/* Carousel.module.css */
+
+.carouselContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.quoteText {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.quoteAuthor {
+  font-weight: bold;
+  color: var(--heading);
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--button-text);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navButton:hover {
+  color: var(--link-hover);
+}

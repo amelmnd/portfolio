@@ -1,3 +1,4 @@
+
 .iconsContainer {
   display: flex;
   justify-content: center;
@@ -8,7 +9,6 @@
 .skillIcon {
   color: var(--text);
   padding: 0.2rem;
-
 }
 
 .iconLink:hover .skillIcon {
@@ -16,24 +16,31 @@
   border-radius: 17%;
 }
 
+/* Hover color per platform using variables */
 .Email:hover .skillIcon {
-  color: #7a557e;
+  color: var(--email-color);
 }
+
 .LinkedIn:hover .skillIcon {
-  color: #0A66C2;
+  color: var(--linkedin-color);
 }
+
 .GitHub:hover .skillIcon {
-  color: #4d4c4c;
+  color: var(--github-color);
 }
+
 .CodePen:hover .skillIcon {
-  color: #98989a;
+  color: var(--codepen-color);
 }
+
 .Freecodecamp:hover .skillIcon {
-  color: #2F5C04;
+  color: var(--freecodecamp-color);
 }
+
 .Codingame:hover .skillIcon {
-  color: #F2BB13;
+  color: var(--codingame-color);
 }
+
 .Hackerrank:hover .skillIcon {
-  color: #02E963;
+  color: var(--hackerrank-color);
 }
