@@ -3,8 +3,7 @@
   max-width: 1200px;
   margin: 3rem auto;
   padding: 0 2rem;
-    scroll-margin-top: 120px;
-
+  scroll-margin-top: 120px;
 }
 
 .title {
@@ -42,6 +41,7 @@
 .timeline::-webkit-scrollbar {
   display: none;
 }
+
 .timelineWrapper {
   position: relative;
   display: flex;
@@ -68,6 +68,7 @@
 }
 
 .timelineContent {
+  min-width: 200px;
   max-width: 300px;
   height: 200px;
   flex-shrink: 0;
@@ -139,7 +140,6 @@
 
 .timelinePeriod::before {
   width: 15px;
-  background: var(--button-bg);
   border-radius: 50%;
   content: "";
   position: absolute;
@@ -167,6 +167,14 @@
 .timelineLocation {
   font-size: 1em;
   font-style: oblique;
+}
+
+.work .timelinePeriod {
+  background-color: var(--card-bg);
+}
+
+.education {
+  background-color: var(--button-bg);
 }
 
 .work {

@@ -1,38 +1,39 @@
-/* Variables light mode par défaut */
+/* Variables light mode adaptées au style Vandana Lite */
 :root {
   --background: #FFF;
-  --text: #3A3A3A;
-  --heading: #212336;
-  --link: #363637;
-  --link-hover: #A89F91;
-  --button-bg: #F8E9E6;
-  --button-text: #5C4B51;
-  --card-bg: #FBF0F0;
-  --border: #A3A390;
-  --email-color: #7a557e;
-  --linkedin-color: #0A66C2;
-  --github-color: #4d4c4c;
-  --codepen-color: #98989a;
-  --freecodecamp-color: #2F5C04;
-  --codingame-color: #F2BB13;
-  --hackerrank-color: #02E963;}
+  --text: #4B4B4B;               /* texte gris doux */
+  --heading: #2c2c2c;            /* titres foncés pour bon contraste */
+  --link: #c06c84;               /* rose mauve typique du thème */
+  --link-hover: #9e5b74;         /* version foncée pour effet hover */
+  --button-bg: #f7d1cd;          /* fond rose clair des boutons */
+  --button-text: #5c3d44;        /* texte bouton brun doux */
+  --card-bg: #fff3f2;            /* fond de carte pâle rose/beige */
+  --border: #e5c7c2;             /* bordure rose-beige pastel */
+  --email-color: #7a557e;        /* inchangé : violet email */
+  --linkedin-color: #0A66C2;     /* inchangé */
+  --github-color: #4d4c4c;       /* inchangé */
+  --codepen-color: #98989a;      /* inchangé */
+  --freecodecamp-color: #2F5C04; /* inchangé */
+  --codingame-color: #F2BB13;    /* inchangé */
+  --hackerrank-color: #02E963;   /* inchangé */
+}
 
-/* Mode sombre */
+/* Variables dark mode harmonisées avec Vandana Lite */
 body.dark {
-  --background: #0e0d0d;
-  --text: #E6E1D4;
-  --heading: #ece9e5;
-  --link: #f1ede7;
-  --link-hover: #D6CEC3;
-  --button-bg: #6E5E60;
-  --button-text: #E6E1D4;
-  --card-bg: #3b3939;
-  --border: #5A4E3C;
-    --email-color: #7a557e;
-  --linkedin-color: #0A66C2;
-  --github-color: #bab399;
-  --codepen-color: #98989a;
-  --freecodecamp-color: #2F5C04;
-  --codingame-color: #F2BB13;
-  --hackerrank-color: #02E963;
+  --background: #2b1e1f;          /* fond brun/prune sombre */
+  --text: #f7e9e7;                /* texte crème clair */
+  --heading: #fff0ec;             /* titres plus clairs */
+  --link: #f5b1c2;                /* rose clair pour liens */
+  --link-hover: #fdd3da;          /* hover encore plus doux */
+  --button-bg: #6a4e52;           /* fond bouton prune/brun */
+  --button-text: #f7e9e7;         /* texte bouton clair */
+  --card-bg: #3e2e30;             /* carte brun foncé */
+  --border: #a27d81;              /* bordure prune doux */
+  --email-color: #b98dc2;         /* version plus claire en sombre */
+  --linkedin-color: #0A66C2;      /* inchangé */
+  --github-color: #d6cfcf;        /* adapté au fond sombre */
+  --codepen-color: #c1c1c3;       /* gris clair */
+  --freecodecamp-color: #83a860;  /* adapté pour lisibilité */
+  --codingame-color: #FFD966;     /* jaune doré atténué */
+  --hackerrank-color: #27ff8a;    /* vert fluo lisible */
 }
