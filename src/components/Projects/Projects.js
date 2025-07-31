@@ -37,9 +37,8 @@ export default function Projects() {
         d&apos;eux fait partie de mes projets préférés et les plus aboutis.
       </p>
       <p className={styles.subtitle}>
-        Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans
-        <Link href='/projects' className={styles.link}>
-          mon laboratoire
+        Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans <Link href='/projects' className={styles.link}>
+          mon bac à sable de test
         </Link>
         .
       </p>

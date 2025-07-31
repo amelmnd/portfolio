@@ -86,8 +86,8 @@
 
 .button {
   text-decoration: none;
-  background: var(--link);
-  color: #fff;
+  background: var(--button-bg);
+  color: var(--button-text);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.85rem;

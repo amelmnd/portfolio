@@ -67,7 +67,7 @@
 
 .button {
 	text-decoration: none;
-	background: var(--link);
+	background: var(--button-bg);
 	color: var(--button-text);
 	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
@@ -76,7 +76,8 @@
 }
 
 .button:hover {
-	background: var(--link-hover);
+  color: var(--button-bg);
+  background: var(--button-text);
 }
 
 @media (max-width: 568px) {
