@@ -7,7 +7,7 @@
 }
 
 .title {
-  font-family: 'Playwrite HU', serif;
+  font-family: "Playwrite HU", serif;
   color: var(--heading);
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -153,15 +153,14 @@
   font-weight: bold;
   color: var(--heading);
   margin-bottom: 10px;
-	font-family: 'Playwrite HU', serif;
+  font-family: "Playwrite HU", serif;
 }
 
 .timelineSubtitle {
   font-size: 1.1em;
   font-style: oblique;
   font-weight: 700;
-  font-family: 'Playwrite HU', serif;
-
+  font-family: "Playwrite HU", serif;
 }
 
 .timelineLocation {
@@ -183,4 +182,76 @@
 
 .education {
   background-color: var(--button-bg);
+}
+
+@media (max-width: 768px) {
+  .timeline {
+    padding: 1rem;
+    height: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .timelineContent {
+    width: 90%;
+    max-width: 90%;
+    min-width: auto;
+    margin: 0 auto 1rem;
+    height: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  .timelineContentInside {
+    padding: 1rem;
+  }
+
+  .timelinePeriod {
+    position: static;
+    margin: 1rem;
+    color: var(--button-text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    text-align: center;
+    width: fit-content;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .education .timelinePeriod {
+    background: var(--card-bg);
+  }
+  .work .timelinePeriod {
+    background: var(--button-bg);
+  }
+
+  .timelineContent::before,
+  .timelineContent::after {
+    display: none;
+  }
+
+  .timelineContent:nth-child(even),
+  .timelineContent:nth-child(odd) {
+    align-self: stretch;
+  }
+
+  .scrollButton {
+    font-size: 1.5rem;
+    padding: 0.25rem;
+    margin: 0 0.25rem;
+  }
+
+  .textContent {
+    font-size: 0.95rem;
+  }
+
+  .timelineSubtitle,
+  .timelineLocation {
+    font-size: 0.9rem;
+  }
+
+  .timielineTitle {
+    font-size: 1rem;
+  }
 }

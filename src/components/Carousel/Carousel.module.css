@@ -1,22 +1,22 @@
-/* Carousel.module.css */
-
 .carouselContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   position: relative;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.quoteText {
-  font-size: 1rem;
-  color: var(--text);
-  margin-bottom: 1rem;
-}
-
-.quoteAuthor {
-  font-weight: bold;
-  color: var(--heading);
+.quoteCard {
+  flex: 1;
+  max-width: 600px;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--background-light);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .navButton {
@@ -30,4 +30,22 @@
 
 .navButton:hover {
   color: var(--link-hover);
+}
+
+/* 🟢 Responsive mobile */
+@media (max-width: 768px) {
+  .carouselContainer {
+    gap: 0.5rem;
+  }
+
+  .quoteCard {
+    padding: 0.8rem;
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .navButton {
+    font-size: 1.5rem; /* plus petit */
+    padding: 0.25rem;
+  }
 }
