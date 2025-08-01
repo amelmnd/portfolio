@@ -1,6 +1,5 @@
-// components/ReferenceCarousel.jsx
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Carousel from '../Carousel/Carousel';
 import styles from './ReferenceCarousel.module.css';
 
@@ -36,12 +35,34 @@ export default function ReferenceCarousel() {
           card: styles.quoteCardRef,
           navButton: styles.navButtonRef,
         }}
-        renderItem={(quote) => (
-          <article>
-            <blockquote className={styles.quoteText}>{quote.text}</blockquote>
-            <footer className={styles.quoteAuthor}>{quote.author}</footer>
-          </article>
-        )}
+        renderItem={(quote) => {
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          const [expanded, setExpanded] = useState(false);
+          const toggle = () => setExpanded((prev) => !prev);
+
+          const isMobile =
+            typeof window !== 'undefined' && window.innerWidth <= 768;
+          const shortText =
+            quote.text.slice(0, 200) + (quote.text.length > 200 ? '…' : '');
+
+          return (
+            <article>
+              <blockquote className={styles.quoteText}>
+                {isMobile && !expanded ? shortText : quote.text}
+              </blockquote>
+
+              {isMobile && quote.text.length > 200 && (
+                <div className={styles.mobileToggle}>
+                  <button onClick={toggle} className={styles.toggleButton}>
+                    {expanded ? 'Réduire' : 'Lire plus…'}
+                  </button>
+                </div>
+              )}
+
+              <footer className={styles.quoteAuthor}>{quote.author}</footer>
+            </article>
+          );
+        }}
       />
     </section>
   );

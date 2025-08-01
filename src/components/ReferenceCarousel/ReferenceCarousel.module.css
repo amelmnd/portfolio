@@ -56,3 +56,32 @@
 .quoteAuthor{
   font-family: 'Playwrite HU', serif;
 }
+.quoteText {
+  color: var(--text);
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+.mobileToggle {
+  display: none;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: var(--link);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.toggleButton:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .mobileToggle {
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
