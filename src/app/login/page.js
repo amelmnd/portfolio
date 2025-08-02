@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '../../components/AdminDasboard/AuthProvider'
+import { useAuth } from '../../context/AuthProvider'
 
 export default function Login() {
 	const { signInWithOAuth } = useAuth()

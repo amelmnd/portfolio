@@ -1,4 +1,4 @@
-import { AuthProvider } from '../components/AdminDasboard/AuthProvider'
+import { AuthProvider } from '../context/AuthProvider'
 import Header from '../components/Header/Header'
 
 import '../styles/globals.css'
