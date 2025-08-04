@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from '../projects/AddProject.module.css';
+import SkillSelector from '../../../components/SkillSelector/SkillSelector';
 
 export default function AddEducation({ onAdded, onBack }) {
   const [form, setForm] = useState({
@@ -17,6 +18,7 @@ export default function AddEducation({ onAdded, onBack }) {
     active: false,
   });
 
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -34,21 +36,33 @@ export default function AddEducation({ onAdded, onBack }) {
     setErrorMsg('');
 
     try {
-      const { error } = await supabase.from('education').insert([
-        {
-          institution: form.institution,
-          studytype: form.studytype,
-          area: form.area,
-          location: form.location,
-          certificationUrl: form.certificationUrl,
-          summary: form.summary,
-          startDate: form.startDate || null,
-          endDate: form.endDate || null,
-          active: form.active,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from('education')
+        .insert([
+          {
+            institution: form.institution,
+            studytype: form.studytype,
+            area: form.area,
+            location: form.location,
+            certificationUrl: form.certificationUrl,
+            summary: form.summary,
+            startDate: form.startDate || null,
+            endDate: form.endDate || null,
+            active: form.active,
+          },
+        ])
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // 🔗 Insérer les compétences sélectionnées dans education_skills
+      for (const skill of selectedSkills) {
+        await supabase.from('education_skills').insert({
+          education_id: data.id,
+          skill_id: skill.id,
+        });
+      }
 
       if (onAdded) onAdded();
     } catch (error) {
@@ -60,9 +74,7 @@ export default function AddEducation({ onAdded, onBack }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <button onClick={onBack} className='backButton'>
-        ← Retour
-      </button>
+      <button onClick={onBack} className='backButton'>← Retour</button>
 
       <h2 className={styles.title}>Ajouter une formation</h2>
 
@@ -164,6 +176,12 @@ export default function AddEducation({ onAdded, onBack }) {
         />
         Formation en cours
       </label>
+
+      {/* ✅ Ajout des compétences */}
+      <div className={styles.label}>
+        Compétences acquises :
+        <SkillSelector selected={selectedSkills} onChange={setSelectedSkills} />
+      </div>
 
       {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
 

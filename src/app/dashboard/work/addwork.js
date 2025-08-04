@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from '../projects/AddProject.module.css';
+import SkillSelector from '../../../components/SkillSelector/SkillSelector';
 
 export default function AddWork({ onAdded, onBack }) {
   const [form, setForm] = useState({
@@ -16,6 +17,7 @@ export default function AddWork({ onAdded, onBack }) {
     active: false,
   });
 
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -33,20 +35,32 @@ export default function AddWork({ onAdded, onBack }) {
     setErrorMsg('');
 
     try {
-      const { error } = await supabase.from('work').insert([
-        {
-          enterpriseName: form.enterpriseName,
-          job: form.job,
-          location_type: form.location_type,
-          location: form.location,
-          startDate: form.startDate || null,
-          endDate: form.endDate || null,
-          summary: form.summary,
-          active: form.active,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from('work')
+        .insert([
+          {
+            enterpriseName: form.enterpriseName,
+            job: form.job,
+            location_type: form.location_type,
+            location: form.location,
+            startDate: form.startDate || null,
+            endDate: form.endDate || null,
+            summary: form.summary,
+            active: form.active,
+          },
+        ])
+        .select()
+        .single(); // on récupère l'id du nouvel enregistrement
 
       if (error) throw error;
+
+      // 🔗 Lien vers skills
+      for (const skill of selectedSkills) {
+        await supabase.from('work_skills').insert({
+          work_id: data.id,
+          skill_id: skill.id,
+        });
+      }
 
       if (onAdded) onAdded();
     } catch (error) {
@@ -58,9 +72,7 @@ export default function AddWork({ onAdded, onBack }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <button onClick={onBack} className='backButton'>
-        ← Retour
-      </button>
+      <button onClick={onBack} className='backButton'>← Retour</button>
 
       <h2 className={styles.title}>Ajouter une expérience</h2>
 
@@ -88,7 +100,7 @@ export default function AddWork({ onAdded, onBack }) {
       </label>
 
       <label className={styles.label}>
-        Type de lieu (remote/hybride/...):
+        Type de lieu:
         <input
           className={styles.input}
           type='text'
@@ -151,6 +163,12 @@ export default function AddWork({ onAdded, onBack }) {
         />
         Poste actuel
       </label>
+
+      {/* Sélection des compétences */}
+      <div className={styles.label}>
+        Compétences utilisées :
+        <SkillSelector selected={selectedSkills} onChange={setSelectedSkills} />
+      </div>
 
       {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
 

@@ -3,75 +3,94 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './ProjectsList.module.css';
+import SkillSelector from '../../../components/SkillSelector/SkillSelector';
 
 export default function EditableProjectList() {
   const [projects, setProjects] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [previews, setPreviews] = useState({}); // pour les preview images
+  const [previews, setPreviews] = useState({});
+  const [projectSkills, setProjectSkills] = useState({});
 
-const fetchProjects = async () => {
-  setLoading(true);
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .order('date', { ascending: false }); // <-- tri décroissant sur la date
-  if (error) {
-    alert('Erreur : ' + error.message);
+  const fetchProjects = async () => {
+    setLoading(true);
+
+    const { data: projectsData, error: projectError } = await supabase
+      .from('projects')
+      .select('*')
+      .order('date', { ascending: false });
+
+    if (projectError) {
+      alert('Erreur : ' + projectError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { data: links, error: skillsError } = await supabase
+      .from('project_skills')
+      .select('project_id, skills ( id, name )');
+
+    if (skillsError) {
+      alert('Erreur chargement skills : ' + skillsError.message);
+      setLoading(false);
+      return;
+    }
+
+    const skillMap = {};
+    links?.forEach((link) => {
+      const skill = link.skills;
+      if (!skillMap[link.project_id]) skillMap[link.project_id] = [];
+      skillMap[link.project_id].push(skill);
+    });
+
+    setProjectSkills(skillMap);
+    setProjects(projectsData || []);
     setLoading(false);
-    return;
-  }
-  setProjects(data || []);
-  setLoading(false);
-};
-
+  };
 
   useEffect(() => {
     fetchProjects();
   }, []);
 
   const handleInputChange = (id, field, value) => {
-    setProjects((projects) =>
-      projects.map((p) => (p.id === id ? { ...p, [field]: value } : p))
+    setProjects((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
     );
+  };
+
+  const handleSkillChange = (projectId, skills) => {
+    setProjectSkills((prev) => ({
+      ...prev,
+      [projectId]: skills,
+    }));
   };
 
   const handleImageChange = async (id, file) => {
     if (!file) return;
 
-    // Preview locale immédiate
     const previewURL = URL.createObjectURL(file);
     setPreviews((prev) => ({ ...prev, [id]: previewURL }));
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append(
-      'upload_preset',
-      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-    );
+    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
 
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: 'POST',
-          body: formData,
-        }
+        { method: 'POST', body: formData }
       );
       const data = await res.json();
 
       if (data.secure_url) {
-        handleInputChange(id, 'imgLink', data.secure_url);
+        handleInputChange(id, 'imglink', data.secure_url);
         setPreviews((prev) => {
           const { [id]: _, ...rest } = prev;
           return rest;
         });
       } else {
-        alert(
-          "Échec de l'upload image : " +
-            (data.error?.message || JSON.stringify(data))
-        );
+        alert("Échec upload image : " + (data.error?.message || JSON.stringify(data)));
       }
     } catch (err) {
       alert('Erreur Cloudinary : ' + err.message);
@@ -80,17 +99,34 @@ const fetchProjects = async () => {
 
   const handleSave = async (project) => {
     setSaving(true);
+
     const { error } = await supabase
       .from('projects')
       .update(project)
       .eq('id', project.id);
 
     if (error) {
-      alert('Erreur : ' + error.message);
-    } else {
-      setEditingId(null);
-      fetchProjects(); // recharge la liste
+      alert('Erreur projet : ' + error.message);
+      setSaving(false);
+      return;
     }
+
+    // 🔄 Mise à jour skills liées
+    const currentSkills = projectSkills[project.id] || [];
+
+    // Supprimer tous les liens existants
+    await supabase.from('project_skills').delete().eq('project_id', project.id);
+
+    // Réinsérer tous les skills sélectionnés
+    for (const skill of currentSkills) {
+      await supabase.from('project_skills').insert({
+        project_id: project.id,
+        skill_id: skill.id,
+      });
+    }
+
+    setEditingId(null);
+    await fetchProjects();
     setSaving(false);
   };
 
@@ -98,7 +134,6 @@ const fetchProjects = async () => {
     if (!confirm('Supprimer ce projet ?')) return;
 
     const { error } = await supabase.from('projects').delete().eq('id', id);
-
     if (error) alert('Erreur : ' + error.message);
     else fetchProjects();
   };
@@ -135,17 +170,9 @@ const fetchProjects = async () => {
               <label>
                 Image :
                 {previews[project.id] ? (
-                  <img
-                    src={previews[project.id]}
-                    className={styles.image}
-                    alt='Preview'
-                  />
-                ) : project.imgLink ? (
-                  <img
-                    src={project.imgLink}
-                    className={styles.image}
-                    alt={project.title}
-                  />
+                  <img src={previews[project.id]} className={styles.image} alt='Preview' />
+                ) : project.imglink ? (
+                  <img src={project.imglink} className={styles.image} alt={project.title} />
                 ) : (
                   <i>Pas d’image</i>
                 )}
@@ -162,9 +189,9 @@ const fetchProjects = async () => {
                 Repo URL :
                 <input
                   type='text'
-                  value={project.repoURL || ''}
+                  value={project.repourl || ''}
                   onChange={(e) =>
-                    handleInputChange(project.id, 'repoURL', e.target.value)
+                    handleInputChange(project.id, 'repourl', e.target.value)
                   }
                 />
               </label>
@@ -173,9 +200,9 @@ const fetchProjects = async () => {
                 Démo URL :
                 <input
                   type='text'
-                  value={project.demoURL || ''}
+                  value={project.demourl || ''}
                   onChange={(e) =>
-                    handleInputChange(project.id, 'demoURL', e.target.value)
+                    handleInputChange(project.id, 'demourl', e.target.value)
                   }
                 />
               </label>
@@ -202,6 +229,14 @@ const fetchProjects = async () => {
                 />
               </label>
 
+              <label>
+                Compétences :
+                <SkillSelector
+                  selected={projectSkills[project.id] || []}
+                  onChange={(skills) => handleSkillChange(project.id, skills)}
+                />
+              </label>
+
               <div className={styles.buttons}>
                 <button onClick={() => handleSave(project)} disabled={saving}>
                   💾 Enregistrer
@@ -213,24 +248,20 @@ const fetchProjects = async () => {
             <>
               <h3>{project.title || <i>(Sans titre)</i>}</h3>
               <p>{project.description || <i>Pas de description</i>}</p>
-              {project.imgLink && (
-                <img
-                  src={project.imgLink}
-                  className={styles.image}
-                  alt={project.title}
-                />
+              {project.imglink && (
+                <img src={project.imglink} className={styles.image} alt={project.title} />
               )}
               <div>
                 <strong>Favori :</strong> {project.fav ? '⭐ Oui' : 'Non'}
               </div>
               <div className={styles.links}>
-                {project.repoURL && (
-                  <a href={project.repoURL} target='_blank' rel='noreferrer'>
+                {project.repourl && (
+                  <a href={project.repourl} target='_blank' rel='noreferrer'>
                     Code
                   </a>
                 )}
-                {project.demoURL && (
-                  <a href={project.demoURL} target='_blank' rel='noreferrer'>
+                {project.demourl && (
+                  <a href={project.demourl} target='_blank' rel='noreferrer'>
                     Démo
                   </a>
                 )}
@@ -240,6 +271,12 @@ const fetchProjects = async () => {
                 {project.date
                   ? new Date(project.date).toLocaleDateString()
                   : '(non renseignée)'}
+              </div>
+              <div>
+                <strong>Skills :</strong>{' '}
+                {(projectSkills[project.id] || [])
+                  .map((s) => s.name)
+                  .join(', ') || <i>Aucune</i>}
               </div>
               <div className={styles.buttons}>
                 <button onClick={() => setEditingId(project.id)}>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import AddEducation from './addeducation';
 import EducationList from './listeducation';
+import SkillSelector from '../../../components/SkillSelector/SkillSelector';
 
 export default function EducationPage() {
   const [view, setView] = useState('list');

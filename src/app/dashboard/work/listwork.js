@@ -3,25 +3,48 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from '../projects/ProjectsList.module.css';
+import SkillSelector from '../../../components/SkillSelector/SkillSelector';
 
 export default function WorkList() {
   const [items, setItems] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [workSkills, setWorkSkills] = useState({});
 
   const fetchItems = async () => {
     setLoading(true);
-    const { data, error } = await supabase
+
+    const { data: workData, error: workError } = await supabase
       .from('work')
       .select('*')
       .order('startDate', { ascending: false });
-    if (error) {
-      alert('Erreur : ' + error.message);
+
+    if (workError) {
+      alert('Erreur : ' + workError.message);
       setLoading(false);
       return;
     }
-    setItems(data || []);
+
+    const { data: links, error: skillsError } = await supabase
+      .from('work_skills')
+      .select('work_id, skills ( id, name )');
+
+    if (skillsError) {
+      alert('Erreur chargement skills : ' + skillsError.message);
+      setLoading(false);
+      return;
+    }
+
+    const skillMap = {};
+    links?.forEach((link) => {
+      const skill = link.skills;
+      if (!skillMap[link.work_id]) skillMap[link.work_id] = [];
+      skillMap[link.work_id].push(skill);
+    });
+
+    setWorkSkills(skillMap);
+    setItems(workData || []);
     setLoading(false);
   };
 
@@ -30,23 +53,43 @@ export default function WorkList() {
   }, []);
 
   const handleInputChange = (id, field, value) => {
-    setItems((items) =>
-      items.map((i) => (i.id === id ? { ...i, [field]: value } : i))
+    setItems((prev) =>
+      prev.map((i) => (i.id === id ? { ...i, [field]: value } : i))
     );
+  };
+
+  const handleSkillChange = (workId, skills) => {
+    setWorkSkills((prev) => ({
+      ...prev,
+      [workId]: skills,
+    }));
   };
 
   const handleSave = async (item) => {
     setSaving(true);
-    const { error } = await supabase
-      .from('work')
-      .update(item)
-      .eq('id', item.id);
+
+    const { error } = await supabase.from('work').update(item).eq('id', item.id);
     if (error) {
       alert('Erreur : ' + error.message);
-    } else {
-      setEditingId(null);
-      fetchItems();
+      setSaving(false);
+      return;
     }
+
+    const currentSkills = workSkills[item.id] || [];
+
+    // Supprime les anciens liens
+    await supabase.from('work_skills').delete().eq('work_id', item.id);
+
+    // Ajoute les nouveaux
+    for (const skill of currentSkills) {
+      await supabase.from('work_skills').insert({
+        work_id: item.id,
+        skill_id: skill.id,
+      });
+    }
+
+    setEditingId(null);
+    await fetchItems();
     setSaving(false);
   };
 
@@ -144,6 +187,13 @@ export default function WorkList() {
                 />
               </label>
 
+              <label>Compétences:
+                <SkillSelector
+                  selected={workSkills[item.id] || []}
+                  onChange={(skills) => handleSkillChange(item.id, skills)}
+                />
+              </label>
+
               <div className={styles.buttons}>
                 <button onClick={() => handleSave(item)} disabled={saving}>
                   💾 Enregistrer
@@ -159,6 +209,10 @@ export default function WorkList() {
               <p>{item.summary || <i>Pas de résumé</i>}</p>
               <div>
                 <strong>Active:</strong> {item.active ? '✅' : '❌'}
+              </div>
+              <div>
+                <strong>Compétences:</strong>{' '}
+                {(workSkills[item.id] || []).map((s) => s.name).join(', ') || <i>Aucune</i>}
               </div>
               <div className={styles.buttons}>
                 <button onClick={() => setEditingId(item.id)}>

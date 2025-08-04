@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import styles from './SkillSelector.module.css';
 
 export default function SkillSelector({ selected = [], onChange }) {
   const [allSkills, setAllSkills] = useState([]);
@@ -58,18 +59,17 @@ export default function SkillSelector({ selected = [], onChange }) {
   };
 
   return (
-    <div className="w-full max-w-xl">
-      <label className="font-semibold text-sm">Compétences</label>
-      <div className="flex flex-wrap gap-2 my-2">
+    <div className={styles.container}>
+      <label className={styles.label}>Compétences</label>
+
+      <div className={styles.tagsContainer}>
         {selectedSkills.map((skill) => (
-          <span
-            key={skill.id}
-            className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center gap-1"
-          >
+          <span key={skill.id} className={styles.tag}>
             {skill.name}
             <button
               onClick={() => handleRemove(skill.id)}
-              className="text-xs text-red-600 hover:text-red-800"
+              className={styles.removeButton}
+              title="Supprimer"
             >
               ✕
             </button>
@@ -82,26 +82,23 @@ export default function SkillSelector({ selected = [], onChange }) {
         value={inputValue}
         placeholder="Ajouter une compétence..."
         onChange={(e) => setInputValue(e.target.value)}
-        className="border w-full px-3 py-2 rounded"
+        className={styles.input}
       />
 
       {inputValue && (
-        <div className="border mt-1 rounded shadow bg-white max-h-48 overflow-y-auto">
+        <div className={styles.dropdown}>
           {filtered.length > 0 ? (
             filtered.map((skill) => (
               <div
                 key={skill.id}
-                className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                className={styles.dropdownItem}
                 onClick={() => handleSelect(skill)}
               >
                 {skill.name}
               </div>
             ))
           ) : (
-            <div
-              className="px-3 py-2 cursor-pointer text-blue-600 hover:underline"
-              onClick={handleAddNew}
-            >
+            <div className={styles.addNewItem} onClick={handleAddNew}>
               ➕ Ajouter “{inputValue}”
             </div>
           )}
