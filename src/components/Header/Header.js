@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './Header.module.css';
 import Link from 'next/link';
 import useMediaQuery from '../../hook/useMediaQuery';
+import Image from 'next/image';
 
 export default function Header() {
   const [isDark, setIsDark] = useState(false);
@@ -43,8 +44,19 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>Logo</div>
-
+      <div>
+        <Link href={'/'}>
+          <Image
+            src={
+              isDark ? '/img/logos/logoDark.png' : '/img/logos/logoLight.png'
+            }
+            alt='Logo'
+            width={120} // adapte à la taille de ton image
+            height={40}
+            className={styles.logo}
+          />
+        </Link>
+      </div>
       {!isMobile && <nav className={styles.nav}>{links}</nav>}
 
       <div className={styles.actions}>
@@ -56,9 +68,10 @@ export default function Header() {
           >
             {isMenuOpen ? '✖' : '☰'}
           </button>
-        )} {isMobile && isMenuOpen && (
-        <nav className={styles.mobileNav}>{links}</nav>
-      )}
+        )}{' '}
+        {isMobile && isMenuOpen && (
+          <nav className={styles.mobileNav}>{links}</nav>
+        )}
         <button
           aria-label='Toggle Dark Mode'
           onClick={toggleTheme}
@@ -66,10 +79,7 @@ export default function Header() {
         >
           {isDark ? '☀️' : '🌙'}
         </button>
-
       </div>
-
-
     </header>
   );
 }

@@ -16,6 +16,13 @@
   gap: 1.5rem;
 }
 
+.logo {
+  width: 50px;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
 .link {
   font-family: 'Playwrite HU', serif;
   color: var(--link);
