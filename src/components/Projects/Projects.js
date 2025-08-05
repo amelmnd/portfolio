@@ -17,41 +17,50 @@ export default function Projects() {
     const fetchProjects = async () => {
       setLoading(true);
 
-      // Étape 1 : charger les projets favoris
-      const { data: favProjects, error: favError } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('fav', true)
-        .order('date', { ascending: false });
-
-      if (favError) {
-        alert('Erreur chargement projets favoris : ' + favError.message);
-        setLoading(false);
-        return;
-      }
-
-      let allProjects = favProjects || [];
-
-      // Étape 2 : si < 4, compléter avec projets non favoris
-      if (allProjects.length < 4) {
-        const { data: otherProjects, error: otherError } = await supabase
+      try {
+        const { data: favProjects, error: favError } = await supabase
           .from('projects')
-          .select('*')
-          .eq('fav', false)
-          .order('date', { ascending: false })
-          .limit(4 - allProjects.length);
+          .select(`
+            *,
+            project_skills:project_skills!project_skills_project_id_fkey (
+              skills:skills!project_skills_skill_id_fkey (
+                name
+              )
+            )
+          `)
+          .eq('fav', true)
+          .order('date', { ascending: false });
 
-        if (otherError) {
-          alert('Erreur projets complémentaires : ' + otherError.message);
-          setLoading(false);
-          return;
+        if (favError) throw favError;
+
+        let allProjects = favProjects || [];
+
+        if (allProjects.length < 4) {
+          const { data: otherProjects, error: otherError } = await supabase
+            .from('projects')
+            .select(`
+              *,
+              project_skills:project_skills!project_skills_project_id_fkey (
+                skills:skills!project_skills_skill_id_fkey (
+                  name
+                )
+              )
+            `)
+            .eq('fav', false)
+            .order('date', { ascending: false })
+            .limit(4 - allProjects.length);
+
+          if (otherError) throw otherError;
+
+          allProjects = [...allProjects, ...(otherProjects || [])];
         }
 
-        allProjects = [...allProjects, ...(otherProjects || [])];
+        setProjects(allProjects);
+      } catch (error) {
+        alert('Erreur lors du chargement des projets : ' + error.message);
+      } finally {
+        setLoading(false);
       }
-
-      setProjects(allProjects);
-      setLoading(false);
     };
 
     fetchProjects();
@@ -85,7 +94,7 @@ export default function Projects() {
               title={project.title}
               description={project.description}
               imgSrc={project.imglink}
-              skills={[]} // À compléter si tu veux afficher les compétences
+              skills={project.project_skills?.map((ps) => ps.skills?.name) || []}
               repourl={project.repourl}
               demourl={project.demourl}
             />
@@ -99,7 +108,7 @@ export default function Projects() {
               title={project.title}
               description={project.description}
               imgSrc={project.imglink}
-              skills={[]} // Idem ici
+              skills={project.project_skills?.map((ps) => ps.skills?.name) || []}
               repourl={project.repourl}
               demourl={project.demourl}
             />

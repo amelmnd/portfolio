@@ -32,7 +32,6 @@ export default function ProjectCard({
             </span>
           ))}
         </div>
-
         {(repourl || demourl) && (
           <div className={styles.links}>
             {repourl && (
