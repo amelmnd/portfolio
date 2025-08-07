@@ -1,9 +1,7 @@
-/* Dashboard.module.css */
-
-
+/* ========== Base Layout ========== */
 .container {
   max-width: 800px;
-  margin: auto;
+  margin: 0 auto;
   padding: 2rem;
   font-family: sans-serif;
 }
@@ -14,10 +12,95 @@
   text-align: center;
 }
 
+.welcome {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.divider {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+/* ========== Navigation Links ========== */
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  flex-direction: row;
+}
+
+.navLink {
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 120px;
+  padding: 0.75rem 1.25rem;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navLink:hover {
+  background-color: #0070f3;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .navLinks {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navLink {
+    width: 100%;
+  }
+}
+
+/* ========== Buttons ========== */
+.signOutBtn {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 0.6rem 1.2rem;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signOutBtn:hover {
+  background-color: #d62828;
+}
+
+.button {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: #777;
+}
+
+/* ========== Formulaire ========== */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
@@ -33,24 +116,7 @@
   min-height: 60px;
 }
 
-.buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.buttons button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #0070f3;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.cancel {
-  background-color: #777;
-}
-
+/* ========== Project Cards ========== */
 .projectList {
   display: flex;
   flex-direction: column;
@@ -66,6 +132,14 @@
 
 .projectCard h2 {
   margin: 0 0 0.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .cardButtons {
@@ -92,80 +166,7 @@
   color: white;
 }
 
-.welcome {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.signOutBtn {
-  display: block;
-  margin: 0 auto 2rem auto;
-  padding: 0.6rem 1.2rem;
-  background-color: #e63946;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.signOutBtn:hover {
-  background-color: #b52a35;
-}
-
-.divider {
-  margin: 2rem 0;
-  border: none;
-  height: 1px;
-  background: #ccc;
-}
-
-.navLinks {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.navLink {
-  color: #0070f3;
-  text-decoration: underline;
-  font-weight: 500;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.navLink:hover {
-  color: #005bb5;
-}
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.button {
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
+/* ========== Grid Layout ========== */
 .grid {
   display: grid;
   gap: 1rem;

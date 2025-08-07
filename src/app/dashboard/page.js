@@ -1,11 +1,24 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthProvider';
 import styles from './Dashboard.module.css';
+import Loader from '@/components/Loader/Loader';
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user !== undefined) {
+      setLoading(false);
+    }
+  }, [user]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!user) {
     return <p>Non connecté</p>;

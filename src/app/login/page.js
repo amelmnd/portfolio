@@ -1,16 +1,20 @@
-'use client'
+'use client';
 
-import { useAuth } from '../../context/AuthProvider'
+import { useAuth } from '../../context/AuthProvider';
+import styles from './Login.module.css';
 
 export default function Login() {
-	const { signInWithOAuth } = useAuth()
+  const { signInWithOAuth } = useAuth();
 
-	return (
-		<div style={{ padding: 20, textAlign: 'center' }}>
-			<h1>Connexion</h1>
-			<button onClick={() => signInWithOAuth('github')} style={{ margin: 10 }}>
-				Se connecter avec GitHub
-			</button>
-		</div>
-	)
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Connexion</h1>
+      <button
+        className={styles.button}
+        onClick={() => signInWithOAuth('github')}
+      >
+        Se connecter avec GitHub
+      </button>
+    </div>
+  );
 }
