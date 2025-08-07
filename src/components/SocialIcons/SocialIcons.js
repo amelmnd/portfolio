@@ -4,7 +4,6 @@ import styles from './SocialIcons.module.css'
 import { Icon } from '@iconify/react'
 import CodingameIcon from '../../assets/codingameIcon.png';
 import Image from 'next/image';
-import { color } from 'framer-motion';
 
 export default function SocialIcons({ width = 32, height = 32 }) {
 	const socialLinks = [

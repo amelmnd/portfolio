@@ -1,4 +1,3 @@
-/* Timeline.module.css */
 .working {
   max-width: 1200px;
   margin: 3rem auto;
@@ -81,9 +80,11 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   color: var(--text);
 }
+
 .timelineContentInside {
   padding: 20px;
 }
+
 .timelineContent::before {
   position: absolute;
   width: calc(100% + 14px);

@@ -6,7 +6,6 @@
   max-width: 1000px;
   text-align: center;
   scroll-margin-top: 120px;
-
 }
 
 .content {
@@ -79,6 +78,7 @@
 .icon {
   vertical-align: middle;
 }
+
 @media (max-width: 768px) {
   .heroImg {
     display: none;

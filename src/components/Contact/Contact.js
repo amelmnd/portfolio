@@ -1,11 +1,8 @@
 'use client'
-
 import SocialIcons from '../SocialIcons/SocialIcons'
-
 import styles from './Contact.module.css'
 
 export default function Contact() {
-
 	return (
     <section id='contact' className={styles.contact}>
       <h2 className={styles.title}>Contact</h2>

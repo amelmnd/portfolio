@@ -1,12 +1,10 @@
-/* ReferenceCarousel.module.css */
-
 .carouselSection{
     max-width: 1100px;
   margin: 3rem auto;
   padding: 0 2rem;
     scroll-margin-top: 120px;
-
 }
+
 .title {
   font-family: 'Playwrite HU', serif;
   color: var(--heading);
@@ -35,6 +33,7 @@
   text-align: center;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
+
 .carouselContainerRef {
   justify-content: center;
   padding: 1rem;
@@ -56,6 +55,7 @@
 .quoteAuthor{
   font-family: 'Playwrite HU', serif;
 }
+
 .quoteText {
   color: var(--text);
   margin-bottom: 1rem;

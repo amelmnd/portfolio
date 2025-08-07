@@ -32,7 +32,6 @@
   color: var(--link-hover);
 }
 
-/* 🟢 Responsive mobile */
 @media (max-width: 768px) {
   .carouselContainer {
     gap: 0.5rem;
@@ -45,7 +44,7 @@
   }
 
   .navButton {
-    font-size: 1.5rem; /* plus petit */
+    font-size: 1.5rem;
     padding: 0.25rem;
   }
 }

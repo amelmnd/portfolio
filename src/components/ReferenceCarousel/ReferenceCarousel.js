@@ -12,7 +12,6 @@ const quotes = [
     text: "Amel est une personne bienveillante qui n'a pas hésité à me proposer d'être ma mentor pour m'aider dans mon cursus. Durant nos échanges, elle a pris soins de bien me connaître afin de s'adapter à ma personnalité. Amel m'a beaucoup encouragé et motivé durant mon parcours. Cela m'a permis d'affronter les difficultés rencontrées et de me challenger. Grâce à son expérience, elle a su me guider, me corriger pour me permettre d'atteindre mes objectifs avec plus de facilité. Par ses conseils, elle m'a également aidé à résoudre certaines problématiques en autonomie.",
     author: 'Jessica Lecoq, Mentorés à 42 Nice, 2024',
   },
-
   {
     text: "Amel est une personne volontaire et passionnée par le métier de développeuse. Nous avons remarqué sa capacité d'adaptation et son investissement lors de travaux techniques sur notre site web en Drupal. Elle osait poser des questions afin de réaliser au mieux les sujets demandés et cela payait. J'ai apprécié cette collaboration et lui souhaite le meilleur pour la suite.",
     author:
@@ -50,7 +49,6 @@ export default function ReferenceCarousel() {
               <blockquote className={styles.quoteText}>
                 {isMobile && !expanded ? shortText : quote.text}
               </blockquote>
-
               {isMobile && quote.text.length > 200 && (
                 <div className={styles.mobileToggle}>
                   <button onClick={toggle} className={styles.toggleButton}>
@@ -58,7 +56,6 @@ export default function ReferenceCarousel() {
                   </button>
                 </div>
               )}
-
               <footer className={styles.quoteAuthor}>{quote.author}</footer>
             </article>
           );

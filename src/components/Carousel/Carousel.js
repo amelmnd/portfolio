@@ -1,4 +1,3 @@
-// components/Carousel.jsx
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './Carousel.module.css';
@@ -7,7 +6,7 @@ export default function Carousel({
   items,
   interval = 6000,
   renderItem,
-  classNames = {}, // 🆕 pour passer des classes optionnelles
+  classNames = {},
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -50,4 +49,3 @@ export default function Carousel({
     </div>
   );
 }
-

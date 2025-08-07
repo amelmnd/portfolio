@@ -80,7 +80,7 @@ export default function Timeline() {
   const allEvents = [...workEvents, ...educationEvents].sort(
     (a, b) => new Date(b.startDate) - new Date(a.startDate)
   );
-  console.log(allEvents)
+  
   const scroll = (direction) => {
     if (!timelineRef.current) return;
     timelineRef.current.scrollBy({
