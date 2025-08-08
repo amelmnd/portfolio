@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import styles from './ProjectCard.module.css';
+import SkillTags from '../SkillTags/SkillsTags';
 
 export default function ProjectCard({
   title,
@@ -25,13 +26,8 @@ export default function ProjectCard({
         <h3 className={styles.title}>{title}</h3>
         <p className={styles.description}>{description}</p>
 
-        <div className={styles.skills}>
-          {skills?.map((skill, index) => (
-            <span key={index} className={styles.skill}>
-              {skill}
-            </span>
-          ))}
-        </div>
+        <SkillTags skills={skills} />
+
         {(repourl || demourl) && (
           <div className={styles.links}>
             {repourl && (

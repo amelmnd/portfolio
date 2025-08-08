@@ -16,18 +16,18 @@ export default function Projects() {
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
-
       try {
+        // Récupère les projets favoris
         const { data: favProjects, error: favError } = await supabase
           .from('projects')
-          .select(`
+          .select(
+            `
             *,
             project_skills:project_skills!project_skills_project_id_fkey (
-              skills:skills!project_skills_skill_id_fkey (
-                name
-              )
+              skills:skills!project_skills_skill_id_fkey ( name )
             )
-          `)
+          `
+          )
           .eq('fav', true)
           .order('date', { ascending: false });
 
@@ -35,17 +35,18 @@ export default function Projects() {
 
         let allProjects = favProjects || [];
 
+        // Complète si moins de 4 projets
         if (allProjects.length < 4) {
           const { data: otherProjects, error: otherError } = await supabase
             .from('projects')
-            .select(`
+            .select(
+              `
               *,
               project_skills:project_skills!project_skills_project_id_fkey (
-                skills:skills!project_skills_skill_id_fkey (
-                  name
-                )
+                skills:skills!project_skills_skill_id_fkey ( name )
               )
-            `)
+            `
+            )
             .eq('fav', false)
             .order('date', { ascending: false })
             .limit(4 - allProjects.length);
@@ -94,7 +95,9 @@ export default function Projects() {
               title={project.title}
               description={project.description}
               imgSrc={project.imglink}
-              skills={project.project_skills?.map((ps) => ps.skills?.name) || []}
+              skills={
+                project.project_skills?.map((ps) => ps.skills?.name) || []
+              }
               repourl={project.repourl}
               demourl={project.demourl}
             />
@@ -108,7 +111,9 @@ export default function Projects() {
               title={project.title}
               description={project.description}
               imgSrc={project.imglink}
-              skills={project.project_skills?.map((ps) => ps.skills?.name) || []}
+              skills={
+                project.project_skills?.map((ps) => ps.skills?.name) || []
+              }
               repourl={project.repourl}
               demourl={project.demourl}
             />
