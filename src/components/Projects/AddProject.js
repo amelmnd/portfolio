@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import SkillSelector from '../SkillSelector/SkillSelector';
 import styles from './AddProject.module.css';
+import SkillEditor from '../SkillSelector/SkillEditor';
 
 export default function AddProject({ onAdded, onBack }) {
   const [title, setTitle] = useState('');
@@ -166,7 +167,7 @@ export default function AddProject({ onAdded, onBack }) {
 
       <label className={styles.label}>
         Compétences :
-        <SkillSelector selected={skills} onChange={setSkills} />
+        < SkillEditor selected={skills} onChange={setSkills} />
       </label>
 
       <div className={styles.buttons}>

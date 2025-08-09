@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import AddProject from './addproject';
-import ProjectList from './listproject';
+import EditableProjectList from '@/components/Projects/EditableProjectList';
+import AddProject from '@/components/Projects/AddProject';
 
 export default function ProjectsPage() {
   const [view, setView] = useState('list');
@@ -21,10 +21,21 @@ export default function ProjectsPage() {
     <main style={{ padding: 20 }}>
       {view === 'list' ? (
         <>
-          <button onClick={() => setView('form')} style={buttonStyle}>
+          <button
+            onClick={() => setView('form')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#0070f3',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              marginBottom: '20px',
+              cursor: 'pointer',
+            }}
+          >
             ➕ Ajouter un projet
           </button>
-          <ProjectList key={refreshKey} />
+          <EditableProjectList key={refreshKey} />
         </>
       ) : (
         <AddProject onAdded={handleProjectAdded} onBack={handleBack} />
@@ -32,13 +43,3 @@ export default function ProjectsPage() {
     </main>
   );
 }
-
-const buttonStyle = {
-  padding: '8px 16px',
-  backgroundColor: '#0070f3',
-  color: '#fff',
-  border: 'none',
-  borderRadius: '5px',
-  marginBottom: '20px',
-  cursor: 'pointer',
-};
