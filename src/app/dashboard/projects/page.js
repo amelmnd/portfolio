@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import EditableProjectList from '@/components/Projects/EditableProjectList';
-import AddProject from '@/components/Projects/AddProject';
+import AddProject from '../../../components/Projects/AddProject';
+import ProjectList from '../../../components/Projects/EditableProjectList';
 
 export default function ProjectsPage() {
   const [view, setView] = useState('list');

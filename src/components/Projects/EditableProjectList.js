@@ -76,7 +76,10 @@ export default function EditableProjectList() {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+    formData.append(
+      'upload_preset',
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    );
 
     try {
       const res = await fetch(
@@ -92,7 +95,10 @@ export default function EditableProjectList() {
           return rest;
         });
       } else {
-        alert("Échec upload image : " + (data.error?.message || JSON.stringify(data)));
+        alert(
+          'Échec upload image : ' +
+            (data.error?.message || JSON.stringify(data))
+        );
       }
     } catch (err) {
       alert('Erreur Cloudinary : ' + err.message);

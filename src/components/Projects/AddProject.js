@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import SkillSelector from '../SkillSelector/SkillSelector';
 import styles from './AddProject.module.css';
+import SkillSelector from '../SkillSelector/SkillSelector';
 import SkillEditor from '../SkillSelector/SkillEditor';
 
 export default function AddProject({ onAdded, onBack }) {
@@ -23,7 +23,10 @@ export default function AddProject({ onAdded, onBack }) {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+    formData.append(
+      'upload_preset',
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    );
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -34,7 +37,9 @@ export default function AddProject({ onAdded, onBack }) {
     if (data.secure_url) {
       return data.secure_url;
     } else {
-      alert("Échec upload image : " + (data.error?.message || JSON.stringify(data)));
+      alert(
+        'Échec upload image : ' + (data.error?.message || JSON.stringify(data))
+      );
       return '';
     }
   };
@@ -115,14 +120,14 @@ export default function AddProject({ onAdded, onBack }) {
         {imgFile && (
           <img
             src={URL.createObjectURL(imgFile)}
-            alt="Preview"
+            alt='Preview'
             className={styles.previewImage}
           />
         )}
         <input
           className={styles.fileInput}
-          type="file"
-          accept="image/*"
+          type='file'
+          accept='image/*'
           onChange={(e) => setImgFile(e.target.files[0])}
         />
       </label>
@@ -149,7 +154,7 @@ export default function AddProject({ onAdded, onBack }) {
         Date :
         <input
           className={styles.input}
-          type="date"
+          type='date'
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
@@ -158,7 +163,7 @@ export default function AddProject({ onAdded, onBack }) {
       <label className={styles.labelCheckbox}>
         Favori :
         <input
-          type="checkbox"
+          type='checkbox'
           checked={fav}
           onChange={(e) => setFav(e.target.checked)}
           className={styles.checkbox}
@@ -167,15 +172,15 @@ export default function AddProject({ onAdded, onBack }) {
 
       <label className={styles.label}>
         Compétences :
-        < SkillEditor selected={skills} onChange={setSkills} />
+        <SkillEditor selected={skills} onChange={setSkills} />
       </label>
 
       <div className={styles.buttons}>
-        <button type="submit" disabled={saving} className={styles.submitBtn}>
+        <button type='submit' disabled={saving} className={styles.submitBtn}>
           {saving ? 'Enregistrement...' : 'Ajouter'}
         </button>
         <button
-          type="button"
+          type='button'
           onClick={onBack}
           disabled={saving}
           className={styles.cancelBtn}
