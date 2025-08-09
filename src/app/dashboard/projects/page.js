@@ -35,7 +35,7 @@ export default function ProjectsPage() {
           >
             ➕ Ajouter un projet
           </button>
-          <EditableProjectList key={refreshKey} />
+          <ProjectList key={refreshKey} />
         </>
       ) : (
         <AddProject onAdded={handleProjectAdded} onBack={handleBack} />

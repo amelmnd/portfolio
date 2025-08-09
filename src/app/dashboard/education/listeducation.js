@@ -1,206 +1,260 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../projects/AddProject.module.css';
-import SkillSelector from '../../../components/SkillSelector/SkillSelector';
+import styles from './EducationList.module.css';
+import SkillEditor from '../../../components/SkillSelector/SkillEditor';
 
-export default function AddEducation({ onAdded, onBack }) {
-  const [form, setForm] = useState({
-    institution: '',
-    studytype: '',
-    area: '',
-    location: '',
-    certificationUrl: '',
-    summary: '',
-    startDate: '',
-    endDate: '',
-    active: false,
-  });
+export default function EducationList() {
+  const [items, setItems] = useState([]);
+  const [educationSkills, setEducationSkills] = useState({});
+  const [editingId, setEditingId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const [selectedSkills, setSelectedSkills] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  function handleChange(e) {
-    const { name, value, type, checked } = e.target;
-    setForm((f) => ({
-      ...f,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const fetchItems = async () => {
     setLoading(true);
-    setErrorMsg('');
 
-    try {
-      const { data, error } = await supabase
-        .from('education')
-        .insert([
-          {
-            institution: form.institution,
-            studytype: form.studytype,
-            area: form.area,
-            location: form.location,
-            certificationUrl: form.certificationUrl,
-            summary: form.summary,
-            startDate: form.startDate || null,
-            endDate: form.endDate || null,
-            active: form.active,
-          },
-        ])
-        .select()
-        .single();
+    // 📌 Récupère les formations
+    const { data: eduData, error: eduError } = await supabase
+      .from('education')
+      .select('*')
+      .order('startDate', { ascending: false });
 
-      if (error) throw error;
-
-      // 🔗 Insérer les compétences sélectionnées dans education_skills
-      for (const skill of selectedSkills) {
-        await supabase.from('education_skills').insert({
-          education_id: data.id,
-          skill_id: skill.id,
-        });
-      }
-
-      if (onAdded) onAdded();
-    } catch (error) {
-      setErrorMsg(error.message);
+    if (eduError) {
+      alert('Erreur : ' + eduError.message);
+      setLoading(false);
+      return;
     }
 
+    // 📌 Récupère les liens éducation <-> skills
+    const { data: skillLinks, error: skillError } = await supabase
+      .from('education_skills')
+      .select('education_id, skills ( id, name )');
+
+    if (skillError) {
+      alert('Erreur chargement compétences : ' + skillError.message);
+      setLoading(false);
+      return;
+    }
+
+    // 📌 Structure en { education_id: [skills...] }
+    const skillMap = {};
+    skillLinks?.forEach((link) => {
+      const skill = link.skills;
+      if (!skillMap[link.education_id]) skillMap[link.education_id] = [];
+      skillMap[link.education_id].push(skill);
+    });
+
+    setEducationSkills(skillMap);
+    setItems(eduData || []);
     setLoading(false);
-  }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const handleInputChange = (id, field, value) => {
+    setItems((items) =>
+      items.map((i) => (i.id === id ? { ...i, [field]: value } : i))
+    );
+  };
+
+  const handleSkillChange = (eduId, skills) => {
+    setEducationSkills((prev) => ({
+      ...prev,
+      [eduId]: skills,
+    }));
+  };
+
+  const handleSave = async (item) => {
+    setSaving(true);
+
+    // 📌 Met à jour l'éducation
+    const { error } = await supabase
+      .from('education')
+      .update(item)
+      .eq('id', item.id);
+
+    if (error) {
+      alert('Erreur : ' + error.message);
+      setSaving(false);
+      return;
+    }
+
+    // 📌 Met à jour les compétences liées
+    await supabase.from('education_skills').delete().eq('education_id', item.id);
+
+    const currentSkills = educationSkills[item.id] || [];
+    for (const skill of currentSkills) {
+      await supabase.from('education_skills').insert({
+        education_id: item.id,
+        skill_id: skill.id,
+      });
+    }
+
+    setEditingId(null);
+    await fetchItems();
+    setSaving(false);
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('Supprimer cette entrée ?')) return;
+    const { error } = await supabase.from('education').delete().eq('id', id);
+    if (error) alert('Erreur : ' + error.message);
+    else fetchItems();
+  };
+
+  if (loading) return <p>Chargement...</p>;
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <button onClick={onBack} className='backButton'>← Retour</button>
+    <div className={styles.grid}>
+      {items.map((item) => (
+        <div key={item.id} className={styles.card}>
+          {editingId === item.id ? (
+            <>
+              <label>Institution:
+                <input
+                  type='text'
+                  value={item.institution || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'institution', e.target.value)
+                  }
+                />
+              </label>
 
-      <h2 className={styles.title}>Ajouter une formation</h2>
+              <label>Diplôme:
+                <input
+                  type='text'
+                  value={item.studytype || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'studytype', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Institution:
-        <input
-          className={styles.input}
-          type='text'
-          name='institution'
-          value={form.institution}
-          onChange={handleChange}
-          required
-        />
-      </label>
+              <label>Spécialité:
+                <input
+                  type='text'
+                  value={item.area || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'area', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Diplôme:
-        <input
-          className={styles.input}
-          type='text'
-          name='studytype'
-          value={form.studytype}
-          onChange={handleChange}
-        />
-      </label>
+              <label>Localisation:
+                <input
+                  type='text'
+                  value={item.location || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'location', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Spécialité:
-        <input
-          className={styles.input}
-          type='text'
-          name='area'
-          value={form.area}
-          onChange={handleChange}
-        />
-      </label>
+              <label>Début:
+                <input
+                  type='date'
+                  value={item.startDate || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'startDate', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Localisation:
-        <input
-          className={styles.input}
-          type='text'
-          name='location'
-          value={form.location}
-          onChange={handleChange}
-        />
-      </label>
+              <label>Fin:
+                <input
+                  type='date'
+                  value={item.endDate || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'endDate', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        URL du certificat:
-        <input
-          className={styles.input}
-          type='url'
-          name='certificationUrl'
-          value={form.certificationUrl}
-          onChange={handleChange}
-        />
-      </label>
+              <label>Résumé:
+                <textarea
+                  value={item.summary || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'summary', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Résumé:
-        <textarea
-          className={styles.textarea}
-          name='summary'
-          value={form.summary}
-          onChange={handleChange}
-        />
-      </label>
+              <label>Certificat URL:
+                <input
+                  type='url'
+                  value={item.certificationUrl || ''}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'certificationUrl', e.target.value)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Début:
-        <input
-          className={styles.input}
-          type='date'
-          name='startDate'
-          value={form.startDate}
-          onChange={handleChange}
-        />
-      </label>
+              <label>
+                Active:
+                <input
+                  type='checkbox'
+                  checked={item.active || false}
+                  onChange={(e) =>
+                    handleInputChange(item.id, 'active', e.target.checked)
+                  }
+                />
+              </label>
 
-      <label className={styles.label}>
-        Fin:
-        <input
-          className={styles.input}
-          type='date'
-          name='endDate'
-          value={form.endDate}
-          onChange={handleChange}
-        />
-      </label>
+              {/* 📌 Ajout SkillEditor */}
+              <label>Compétences :
+                <SkillEditor
+                  selected={educationSkills[item.id] || []}
+                  onChange={(skills) => handleSkillChange(item.id, skills)}
+                />
+              </label>
 
-      <label className={styles.label}>
-        <input
-          className={styles.checkbox}
-          type='checkbox'
-          name='active'
-          checked={form.active}
-          onChange={handleChange}
-        />
-        Formation en cours
-      </label>
+              <div className={styles.buttons}>
+                <button onClick={() => handleSave(item)} disabled={saving}>
+                  💾 Enregistrer
+                </button>
+                <button onClick={() => setEditingId(null)}>❌ Annuler</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3>{item.institution || <i>(Institution inconnue)</i>}</h3>
+              <p>{item.studytype} - {item.area}</p>
+              <p><strong>Dates:</strong> {item.startDate} → {item.endDate}</p>
+              <p><strong>Lieu:</strong> {item.location}</p>
+              <p>{item.summary || <i>Aucun résumé</i>}</p>
+              {item.certificationUrl && (
+                <a href={item.certificationUrl} target="_blank" rel="noreferrer">
+                  📜 Certificat
+                </a>
+              )}
+              <div>
+                <strong>Active:</strong> {item.active ? '✅' : '❌'}
+              </div>
 
-      {/* ✅ Ajout des compétences */}
-      <div className={styles.label}>
-        Compétences acquises :
-        <SkillSelector selected={selectedSkills} onChange={setSelectedSkills} />
-      </div>
+              {/* 📌 Affichage des compétences */}
+              <div>
+                <strong>Compétences :</strong>{' '}
+                {educationSkills[item.id]?.length
+                  ? educationSkills[item.id].map((s) => s.name).join(', ')
+                  : <i>Aucune</i>}
+              </div>
 
-      {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
-
-      <div className={styles.buttonGroup}>
-        <button className={styles.button} type='submit' disabled={loading}>
-          {loading ? 'Chargement...' : 'Ajouter'}
-        </button>
-        {onBack && (
-          <button
-            type='button'
-            onClick={onBack}
-            className={styles.button}
-            disabled={loading}
-            style={{ backgroundColor: '#666' }}
-          >
-            Retour
-          </button>
-        )}
-      </div>
-    </form>
+              <div className={styles.buttons}>
+                <button onClick={() => setEditingId(item.id)}>
+                  ✏️ Modifier
+                </button>
+                <button onClick={() => handleDelete(item.id)}>
+                  🗑️ Supprimer
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
   );
 }

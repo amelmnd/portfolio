@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../projects/AddProject.module.css';
-import SkillSelector from '../../../components/SkillSelector/SkillSelector';
+import styles from './AddProject.module.css'; // ✅ même CSS que AddProject
+import SkillEditor from '@/components/SkillSelector/SkillEditor';
+import SkillSelector from '@/components/SkillSelector/SkillSelector';
 
 export default function AddEducation({ onAdded, onBack }) {
   const [form, setForm] = useState({
@@ -56,12 +57,13 @@ export default function AddEducation({ onAdded, onBack }) {
 
       if (error) throw error;
 
-      // 🔗 Insérer les compétences sélectionnées dans education_skills
-      for (const skill of selectedSkills) {
-        await supabase.from('education_skills').insert({
-          education_id: data.id,
-          skill_id: skill.id,
-        });
+      if (selectedSkills.length) {
+        for (const skill of selectedSkills) {
+          await supabase.from('education_skills').insert({
+            education_id: data.id,
+            skill_id: skill.id,
+          });
+        }
       }
 
       if (onAdded) onAdded();
@@ -73,17 +75,15 @@ export default function AddEducation({ onAdded, onBack }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <button onClick={onBack} className='backButton'>← Retour</button>
-
+    <form onSubmit={handleSubmit} className={styles.form}>
       <h2 className={styles.title}>Ajouter une formation</h2>
 
       <label className={styles.label}>
-        Institution:
+        Institution :
         <input
           className={styles.input}
-          type='text'
-          name='institution'
+          type="text"
+          name="institution"
           value={form.institution}
           onChange={handleChange}
           required
@@ -91,115 +91,111 @@ export default function AddEducation({ onAdded, onBack }) {
       </label>
 
       <label className={styles.label}>
-        Diplôme:
+        Diplôme :
         <input
           className={styles.input}
-          type='text'
-          name='studytype'
+          type="text"
+          name="studytype"
           value={form.studytype}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Spécialité:
+        Spécialité :
         <input
           className={styles.input}
-          type='text'
-          name='area'
+          type="text"
+          name="area"
           value={form.area}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Localisation:
+        Localisation :
         <input
           className={styles.input}
-          type='text'
-          name='location'
+          type="text"
+          name="location"
           value={form.location}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        URL du certificat:
+        URL du certificat :
         <input
           className={styles.input}
-          type='url'
-          name='certificationUrl'
+          type="url"
+          name="certificationUrl"
           value={form.certificationUrl}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Résumé:
+        Résumé :
         <textarea
           className={styles.textarea}
-          name='summary'
+          name="summary"
           value={form.summary}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Début:
+        Début :
         <input
           className={styles.input}
-          type='date'
-          name='startDate'
+          type="date"
+          name="startDate"
           value={form.startDate}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Fin:
+        Fin :
         <input
           className={styles.input}
-          type='date'
-          name='endDate'
+          type="date"
+          name="endDate"
           value={form.endDate}
           onChange={handleChange}
         />
       </label>
 
-      <label className={styles.label}>
+      <label className={styles.labelCheckbox}>
         <input
           className={styles.checkbox}
-          type='checkbox'
-          name='active'
+          type="checkbox"
+          name="active"
           checked={form.active}
           onChange={handleChange}
         />
         Formation en cours
       </label>
 
-      {/* ✅ Ajout des compétences */}
-      <div className={styles.label}>
+      <label className={styles.label}>
         Compétences acquises :
-        <SkillSelector selected={selectedSkills} onChange={setSelectedSkills} />
-      </div>
+        <SkillEditor selected={selectedSkills} onChange={setSelectedSkills} />
+      </label>
 
-      {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
+      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
 
-      <div className={styles.buttonGroup}>
-        <button className={styles.button} type='submit' disabled={loading}>
-          {loading ? 'Chargement...' : 'Ajouter'}
+      <div className={styles.buttons}>
+        <button type="submit" disabled={loading} className={styles.submitBtn}>
+          {loading ? 'Enregistrement...' : 'Ajouter'}
         </button>
-        {onBack && (
-          <button
-            type='button'
-            onClick={onBack}
-            className={styles.button}
-            disabled={loading}
-            style={{ backgroundColor: '#666' }}
-          >
-            Retour
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onBack}
+          disabled={loading}
+          className={styles.cancelBtn}
+        >
+          Annuler
+        </button>
       </div>
     </form>
   );

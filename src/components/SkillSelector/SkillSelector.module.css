@@ -76,6 +76,7 @@
 
 .addNewItem:hover {
   text-decoration: underline;
+  background-color: rgba(133, 216, 133, 0.779);
 }
 
 .skillEditor {
