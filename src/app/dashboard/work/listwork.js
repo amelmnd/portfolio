@@ -2,19 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../projects/ProjectsList.module.css';
-import SkillSelector from '../../../components/SkillSelector/SkillSelector';
+import styles from '../education/EducationList.module.css'; // ✅ même style
+import SkillEditor from '../../../components/SkillSelector/SkillEditor';
 
 export default function WorkList() {
   const [items, setItems] = useState([]);
+  const [workSkills, setWorkSkills] = useState({});
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [workSkills, setWorkSkills] = useState({});
 
   const fetchItems = async () => {
     setLoading(true);
 
+    // 📌 Récupération des expériences
     const { data: workData, error: workError } = await supabase
       .from('work')
       .select('*')
@@ -26,16 +27,18 @@ export default function WorkList() {
       return;
     }
 
+    // 📌 Récupération des liens work <-> skills
     const { data: links, error: skillsError } = await supabase
       .from('work_skills')
       .select('work_id, skills ( id, name )');
 
     if (skillsError) {
-      alert('Erreur chargement skills : ' + skillsError.message);
+      alert('Erreur chargement compétences : ' + skillsError.message);
       setLoading(false);
       return;
     }
 
+    // 📌 Mapping des compétences
     const skillMap = {};
     links?.forEach((link) => {
       const skill = link.skills;
@@ -68,6 +71,7 @@ export default function WorkList() {
   const handleSave = async (item) => {
     setSaving(true);
 
+    // 📌 Mise à jour de l'expérience
     const { error } = await supabase.from('work').update(item).eq('id', item.id);
     if (error) {
       alert('Erreur : ' + error.message);
@@ -75,12 +79,10 @@ export default function WorkList() {
       return;
     }
 
-    const currentSkills = workSkills[item.id] || [];
-
-    // Supprime les anciens liens
+    // 📌 Mise à jour des compétences
     await supabase.from('work_skills').delete().eq('work_id', item.id);
 
-    // Ajoute les nouveaux
+    const currentSkills = workSkills[item.id] || [];
     for (const skill of currentSkills) {
       await supabase.from('work_skills').insert({
         work_id: item.id,
@@ -110,7 +112,7 @@ export default function WorkList() {
             <>
               <label>Entreprise:
                 <input
-                  type='text'
+                  type="text"
                   value={item.enterpriseName || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'enterpriseName', e.target.value)
@@ -120,7 +122,7 @@ export default function WorkList() {
 
               <label>Poste:
                 <input
-                  type='text'
+                  type="text"
                   value={item.job || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'job', e.target.value)
@@ -130,7 +132,7 @@ export default function WorkList() {
 
               <label>Type de lieu:
                 <input
-                  type='text'
+                  type="text"
                   value={item.location_type || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'location_type', e.target.value)
@@ -140,7 +142,7 @@ export default function WorkList() {
 
               <label>Localisation:
                 <input
-                  type='text'
+                  type="text"
                   value={item.location || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'location', e.target.value)
@@ -150,7 +152,7 @@ export default function WorkList() {
 
               <label>Début:
                 <input
-                  type='date'
+                  type="date"
                   value={item.startDate || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'startDate', e.target.value)
@@ -160,7 +162,7 @@ export default function WorkList() {
 
               <label>Fin:
                 <input
-                  type='date'
+                  type="date"
                   value={item.endDate || ''}
                   onChange={(e) =>
                     handleInputChange(item.id, 'endDate', e.target.value)
@@ -177,9 +179,10 @@ export default function WorkList() {
                 />
               </label>
 
-              <label>Active:
+              <label>
+                Poste actuel:
                 <input
-                  type='checkbox'
+                  type="checkbox"
                   checked={item.active || false}
                   onChange={(e) =>
                     handleInputChange(item.id, 'active', e.target.checked)
@@ -187,8 +190,9 @@ export default function WorkList() {
                 />
               </label>
 
-              <label>Compétences:
-                <SkillSelector
+              {/* 📌 SkillEditor pour édition */}
+              <label>Compétences :
+                <SkillEditor
                   selected={workSkills[item.id] || []}
                   onChange={(skills) => handleSkillChange(item.id, skills)}
                 />
@@ -207,20 +211,19 @@ export default function WorkList() {
               <p>{item.job} – {item.location_type} ({item.location})</p>
               <p><strong>Période:</strong> {item.startDate} → {item.endDate}</p>
               <p>{item.summary || <i>Pas de résumé</i>}</p>
+              <div><strong>Poste actuel:</strong> {item.active ? '✅' : '❌'}</div>
+
+              {/* 📌 Affichage des compétences */}
               <div>
-                <strong>Active:</strong> {item.active ? '✅' : '❌'}
+                <strong>Compétences :</strong>{' '}
+                {workSkills[item.id]?.length
+                  ? workSkills[item.id].map((s) => s.name).join(', ')
+                  : <i>Aucune</i>}
               </div>
-              <div>
-                <strong>Compétences:</strong>{' '}
-                {(workSkills[item.id] || []).map((s) => s.name).join(', ') || <i>Aucune</i>}
-              </div>
+
               <div className={styles.buttons}>
-                <button onClick={() => setEditingId(item.id)}>
-                  ✏️ Modifier
-                </button>
-                <button onClick={() => handleDelete(item.id)}>
-                  🗑️ Supprimer
-                </button>
+                <button onClick={() => setEditingId(item.id)}>✏️ Modifier</button>
+                <button onClick={() => handleDelete(item.id)}>🗑️ Supprimer</button>
               </div>
             </>
           )}

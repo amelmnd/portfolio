@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../projects/AddProject.module.css';
-import SkillSelector from '../../../components/SkillSelector/SkillSelector';
+import styles from '../education/AddProject.module.css';
+import SkillEditor from '@/components/SkillSelector/SkillEditor';
 
 export default function AddWork({ onAdded, onBack }) {
   const [form, setForm] = useState({
@@ -37,29 +37,30 @@ export default function AddWork({ onAdded, onBack }) {
     try {
       const { data, error } = await supabase
         .from('work')
-        .insert([
-          {
-            enterpriseName: form.enterpriseName,
-            job: form.job,
-            location_type: form.location_type,
-            location: form.location,
-            startDate: form.startDate || null,
-            endDate: form.endDate || null,
-            summary: form.summary,
-            active: form.active,
-          },
-        ])
+        .insert([{
+          enterpriseName: form.enterpriseName,
+          job: form.job,
+          location_type: form.location_type,
+          location: form.location,
+          startDate: form.startDate || null,
+          endDate: form.endDate || null,
+          summary: form.summary,
+          active: form.active,
+        }])
         .select()
-        .single(); // on récupère l'id du nouvel enregistrement
+        .single();
 
       if (error) throw error;
 
-      // 🔗 Lien vers skills
-      for (const skill of selectedSkills) {
-        await supabase.from('work_skills').insert({
+      if (selectedSkills.length) {
+        const links = selectedSkills.map(skill => ({
           work_id: data.id,
           skill_id: skill.id,
-        });
+        }));
+        const { error: skillError } = await supabase
+          .from('work_skills')
+          .insert(links);
+        if (skillError) throw skillError;
       }
 
       if (onAdded) onAdded();
@@ -71,17 +72,15 @@ export default function AddWork({ onAdded, onBack }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <button onClick={onBack} className='backButton'>← Retour</button>
-
+    <form onSubmit={handleSubmit} className={styles.form}>
       <h2 className={styles.title}>Ajouter une expérience</h2>
 
       <label className={styles.label}>
-        Entreprise:
+        Entreprise :
         <input
           className={styles.input}
-          type='text'
-          name='enterpriseName'
+          type="text"
+          name="enterpriseName"
           value={form.enterpriseName}
           onChange={handleChange}
           required
@@ -89,104 +88,100 @@ export default function AddWork({ onAdded, onBack }) {
       </label>
 
       <label className={styles.label}>
-        Poste:
+        Poste :
         <input
           className={styles.input}
-          type='text'
-          name='job'
+          type="text"
+          name="job"
           value={form.job}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Type de lieu:
+        Type de lieu :
         <input
           className={styles.input}
-          type='text'
-          name='location_type'
+          type="text"
+          name="location_type"
           value={form.location_type}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Localisation:
+        Localisation :
         <input
           className={styles.input}
-          type='text'
-          name='location'
+          type="text"
+          name="location"
           value={form.location}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Résumé:
+        Résumé :
         <textarea
           className={styles.textarea}
-          name='summary'
+          name="summary"
           value={form.summary}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Début:
+        Début :
         <input
           className={styles.input}
-          type='date'
-          name='startDate'
+          type="date"
+          name="startDate"
           value={form.startDate}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Fin:
+        Fin :
         <input
           className={styles.input}
-          type='date'
-          name='endDate'
+          type="date"
+          name="endDate"
           value={form.endDate}
           onChange={handleChange}
         />
       </label>
 
-      <label className={styles.label}>
+      <label className={styles.labelCheckbox}>
         <input
           className={styles.checkbox}
-          type='checkbox'
-          name='active'
+          type="checkbox"
+          name="active"
           checked={form.active}
           onChange={handleChange}
         />
         Poste actuel
       </label>
 
-      {/* Sélection des compétences */}
-      <div className={styles.label}>
+      <label className={styles.label}>
         Compétences utilisées :
-        <SkillSelector selected={selectedSkills} onChange={setSelectedSkills} />
-      </div>
+        <SkillEditor selected={selectedSkills} onChange={setSelectedSkills} />
+      </label>
 
-      {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
+      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
 
-      <div className={styles.buttonGroup}>
-        <button className={styles.button} type='submit' disabled={loading}>
-          {loading ? 'Chargement...' : 'Ajouter'}
+      <div className={styles.buttons}>
+        <button type="submit" disabled={loading} className={styles.submitBtn}>
+          {loading ? 'Enregistrement...' : 'Ajouter'}
         </button>
-        {onBack && (
-          <button
-            type='button'
-            onClick={onBack}
-            className={styles.button}
-            disabled={loading}
-            style={{ backgroundColor: '#666' }}
-          >
-            Retour
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onBack}
+          disabled={loading}
+          className={styles.cancelBtn}
+        >
+          Annuler
+        </button>
       </div>
     </form>
   );
