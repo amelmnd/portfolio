@@ -27,7 +27,7 @@ const TimelineItem = ({
       </div>
       <div className={styles.timelineTitle}>{title}</div>
       <p className={styles.timelineSubtitle}>{subtitle}</p>
-      <p className={styles.timelineLocation}>{location}</p>
+      <p className={styles.timelineLocation}>{location}</p>      
     </div>
   </div>
 );

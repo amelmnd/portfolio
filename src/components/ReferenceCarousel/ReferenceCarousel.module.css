@@ -1,7 +1,6 @@
 .carouselSection{
     max-width: 1100px;
-  margin: 3rem auto;
-  padding: 0 2rem;
+    margin: 3rem auto;
     scroll-margin-top: 120px;
 }
 

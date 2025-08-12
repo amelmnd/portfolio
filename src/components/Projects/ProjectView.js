@@ -16,7 +16,7 @@ export default function ProjectView({ project, skills, onEdit, onDelete }) {
       <div className={styles.links}>
         {project.repourl && (
           <a href={project.repourl} target="_blank" rel="noreferrer">
-            Code
+            Code test
           </a>
         )}
         {project.demourl && (
