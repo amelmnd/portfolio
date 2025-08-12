@@ -2,18 +2,21 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../education/AddProject.module.css';
+import styles from '../../AddProject.module.css'; // ✅ même CSS que AddProject
 import SkillEditor from '@/components/SkillSelector/SkillEditor';
+import SkillSelector from '@/components/SkillSelector/SkillSelector';
+import ReturnButton from '@/components/ReturnButton/ReturnButton';
 
-export default function AddWork({ onAdded, onBack }) {
+export default function AddEducation({ onAdded, onBack }) {
   const [form, setForm] = useState({
-    enterpriseName: '',
-    job: '',
-    location_type: '',
+    institution: '',
+    studytype: '',
+    area: '',
     location: '',
+    certificationUrl: '',
+    summary: '',
     startDate: '',
     endDate: '',
-    summary: '',
     active: false,
   });
 
@@ -36,31 +39,32 @@ export default function AddWork({ onAdded, onBack }) {
 
     try {
       const { data, error } = await supabase
-        .from('work')
-        .insert([{
-          enterpriseName: form.enterpriseName,
-          job: form.job,
-          location_type: form.location_type,
-          location: form.location,
-          startDate: form.startDate || null,
-          endDate: form.endDate || null,
-          summary: form.summary,
-          active: form.active,
-        }])
+        .from('education')
+        .insert([
+          {
+            institution: form.institution,
+            studytype: form.studytype,
+            area: form.area,
+            location: form.location,
+            certificationUrl: form.certificationUrl,
+            summary: form.summary,
+            startDate: form.startDate || null,
+            endDate: form.endDate || null,
+            active: form.active,
+          },
+        ])
         .select()
         .single();
 
       if (error) throw error;
 
       if (selectedSkills.length) {
-        const links = selectedSkills.map(skill => ({
-          work_id: data.id,
-          skill_id: skill.id,
-        }));
-        const { error: skillError } = await supabase
-          .from('work_skills')
-          .insert(links);
-        if (skillError) throw skillError;
+        for (const skill of selectedSkills) {
+          await supabase.from('education_skills').insert({
+            education_id: data.id,
+            skill_id: skill.id,
+          });
+        }
       }
 
       if (onAdded) onAdded();
@@ -73,38 +77,39 @@ export default function AddWork({ onAdded, onBack }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h2 className={styles.title}>Ajouter une expérience</h2>
+      <ReturnButton routeName={'/dashboard/education'} />
+      <h2 className={styles.title}>Ajouter une formation</h2>
 
       <label className={styles.label}>
-        Entreprise :
+        Institution :
         <input
           className={styles.input}
           type="text"
-          name="enterpriseName"
-          value={form.enterpriseName}
+          name="institution"
+          value={form.institution}
           onChange={handleChange}
           required
         />
       </label>
 
       <label className={styles.label}>
-        Poste :
+        Diplôme :
         <input
           className={styles.input}
           type="text"
-          name="job"
-          value={form.job}
+          name="studytype"
+          value={form.studytype}
           onChange={handleChange}
         />
       </label>
 
       <label className={styles.label}>
-        Type de lieu :
+        Spécialité :
         <input
           className={styles.input}
           type="text"
-          name="location_type"
-          value={form.location_type}
+          name="area"
+          value={form.area}
           onChange={handleChange}
         />
       </label>
@@ -116,6 +121,17 @@ export default function AddWork({ onAdded, onBack }) {
           type="text"
           name="location"
           value={form.location}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label className={styles.label}>
+        URL du certificat :
+        <input
+          className={styles.input}
+          type="url"
+          name="certificationUrl"
+          value={form.certificationUrl}
           onChange={handleChange}
         />
       </label>
@@ -160,11 +176,11 @@ export default function AddWork({ onAdded, onBack }) {
           checked={form.active}
           onChange={handleChange}
         />
-        Poste actuel
+        Formation en cours
       </label>
 
       <label className={styles.label}>
-        Compétences utilisées :
+        Compétences acquises :
         <SkillEditor selected={selectedSkills} onChange={setSelectedSkills} />
       </label>
 

@@ -1,35 +1,28 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import AddEducation from './addeducation';
 import EducationList from './listeducation';
-import SkillSelector from '../../../components/SkillSelector/SkillSelector';
+import ReturnButton from '@/components/ReturnButton/ReturnButton';
 
 export default function EducationPage() {
-  const [view, setView] = useState('list');
   const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleEducationAdded = () => {
-    setView('list');
-    setRefreshKey((prev) => prev + 1);
-  };
-
-  const handleBack = () => {
-    setView('list');
-  };
+  const router = useRouter();
 
   return (
     <main style={{ padding: 20 }}>
-      {view === 'list' ? (
-        <>
-          <button onClick={() => setView('form')} style={buttonStyle}>
-            ➕ Ajouter une formation
-          </button>
-          <EducationList key={refreshKey} />
-        </>
-      ) : (
-        <AddEducation onAdded={handleEducationAdded} onBack={handleBack} />
-      )}
+      <ReturnButton routeName={'/dashboard'} />
+      <div>
+        <button
+          onClick={() =>
+            router.push('/dashboard/education/add-education')
+          }
+          style={buttonStyle}
+        >
+          ➕ Ajouter une formation
+        </button>
+        <EducationList key={refreshKey} />
+      </div>
     </main>
   );
 }

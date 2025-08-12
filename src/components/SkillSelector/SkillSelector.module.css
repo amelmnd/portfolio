@@ -105,3 +105,109 @@
   color: white;
   font-weight: 500;
 }
+
+.skillInputContainer {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.skillInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.skillInput:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.skillAddButton {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.skillAddButton:hover {
+  background-color: #1e40af;
+}
+
+/* Suggestions dropdown */
+.skillInputContainer {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skillInputContainer:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.skillInput {
+  flex: 1;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  padding: 8px 12px;
+}
+
+.skillAddButton {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.skillAddButton:hover {
+  background-color: #1e40af;
+  transform: scale(1.05);
+}
+
+/* Suggestions dropdown */
+.suggestions {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: -0.25rem;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  width: 100%;
+}
+
+.suggestions div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.suggestions div:hover {
+  background-color: #e0f2fe;
+  color: #1e40af;
+}
