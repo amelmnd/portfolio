@@ -32,6 +32,25 @@
   color: var(--link-hover);
 }
 
+.navButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--button-text);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navButton:hover:not(:disabled) {
+  color: var(--link-hover);
+}
+
+.navButton:disabled,
+.navButton.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .carouselContainer {
     gap: 0.5rem;
@@ -41,6 +60,7 @@
     padding: 0.8rem;
     max-width: 100%;
     font-size: 0.95rem;
+    box-shadow: none;
   }
 
   .navButton {

@@ -69,19 +69,20 @@ export default function Projects() {
 
   return (
     <section className={styles.projects} id='projects'>
-      <h2 className={styles.title}>Mes projets préférés</h2>
-      <p className={styles.subtitle}>
-        Voici quelques projets sur lesquels j&apos;ai travaillé, chacun
-        d&apos;eux fait partie de mes projets préférés et les plus aboutis.
-      </p>
-      <p className={styles.subtitle}>
-        Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans{' '}
-        <Link href='/projects' className={styles.link}>
-          mon bac à sable de test
-        </Link>
-        .
-      </p>
-
+      <div className={styles.text}>
+        <h2 className={styles.title}>Mes projets préférés</h2>
+        <p className={styles.subtitle}>
+          Voici quelques projets sur lesquels j&apos;ai travaillé, chacun
+          d&apos;eux fait partie de mes projets préférés et les plus aboutis.
+        </p>
+        <p className={styles.subtitle}>
+          Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans{' '}
+          <Link href='/projects' className={styles.link}>
+            mon bac à sable de test
+          </Link>
+          .
+        </p>
+      </div>
       {loading ? (
         <p>Chargement des projets...</p>
       ) : projects.length === 0 ? (

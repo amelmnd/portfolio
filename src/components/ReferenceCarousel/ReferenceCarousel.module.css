@@ -1,7 +1,8 @@
 .carouselSection{
-    max-width: 1100px;
-    margin: 3rem auto;
-    scroll-margin-top: 120px;
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  scroll-margin-top: 120px;
 }
 
 .title {
@@ -27,8 +28,6 @@
   background-color: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 1rem;
-  padding: 2rem;
-  max-width: 900px;
   text-align: center;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
@@ -82,5 +81,11 @@
   .mobileToggle {
     display: block;
     margin-bottom: 1rem;
+  }
+  .carouselSection{
+      padding: 0;
+  }
+  .quoteText{
+    margin: 2rem;
   }
 }

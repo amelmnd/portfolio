@@ -42,10 +42,10 @@ export default function ReferenceCarousel() {
           const isMobile =
             typeof window !== 'undefined' && window.innerWidth <= 768;
           const shortText =
-            quote.text.slice(0, 200) + (quote.text.length > 200 ? '…' : '');
+            quote.text.slice(0, 200) + (quote.text.length > 100 ? '…' : '');
 
           return (
-            <article>
+            <article className={styles.articleRef}>
               <blockquote className={styles.quoteText}>
                 {isMobile && !expanded ? shortText : quote.text}
               </blockquote>
