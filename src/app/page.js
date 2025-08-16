@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <main>
         <Hero />
-        {/* <Skills />*/}
+        <Skills />
         <Projects />
         <Timeline />
         <ReferenceCarousel />

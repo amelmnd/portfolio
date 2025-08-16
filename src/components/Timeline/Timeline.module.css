@@ -66,9 +66,8 @@
 }
 
 .timelineContent {
-  min-width: 200px;
-  max-width: 300px;
-  height: 200px;
+  width: 300px;
+  min-height: max-content;
   flex-shrink: 0;
   flex-grow: 0;
   align-self: flex-start;
@@ -198,6 +197,21 @@
   color: var(--heading);
   margin-bottom: 10px;
   font-family: "Playwrite HU", serif;
+}
+
+.education .timelineTag{
+  background-color: var(--card-bg);
+  width: max-content;
+  border-radius: 10%;
+  padding: 3%;
+}
+
+.work .timelineTag{
+  background-color: var(--button-bg);
+  width: max-content;
+  border-radius: 10%;
+  padding: 3%;
+
 }
 
 

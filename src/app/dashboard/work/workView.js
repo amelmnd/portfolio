@@ -11,7 +11,7 @@ export default function WorkView({ item, skills, onEdit, onDelete }) {
         <strong>Active:</strong> {item.active ? '✅' : '❌'}
       </div>
       <div>
-        <strong>Compétences:</strong>{' '}
+        <strong>Compétences:</strong>
         {skills.length ? skills.map((s) => s.name).join(', ') : <i>Aucune</i>}
       </div>
       <div className={styles.buttons}>

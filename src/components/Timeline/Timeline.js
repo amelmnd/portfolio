@@ -21,9 +21,10 @@ const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType
       <div className={styles.timelineTitle}>{title}</div>
       <p className={styles.timelineSubtitle}>{subtitle}</p>
       <p className={styles.timelineLocation}>{location}</p>  
+      <p className={styles.timelineTag}>{type}</p>
       {studyType &&    
-      <p className={styles.timelinePeriod}>{studyType}</p>} 
-            <p className={styles.timelinePeriod}>{type}</p>
+        <p className={styles.timelineTag}>{studyType}</p>
+      } 
 
 
     </div>

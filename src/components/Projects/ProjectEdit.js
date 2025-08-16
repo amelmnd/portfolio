@@ -37,23 +37,6 @@ export default function ProjectEdit({
       </label>
 
       <label className={styles.label}>
-        Image :
-        {preview ? (
-          <img src={preview} className={styles.image} alt="Preview" />
-        ) : project.imglink ? (
-          <img src={project.imglink} className={styles.image} alt={project.title} />
-        ) : (
-          <i className={styles.noImage}>Pas d’image</i>
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          className={styles.fileInput}
-          onChange={(e) => onImageChange(project.id, e.target.files[0])}
-        />
-      </label>
-
-      <label className={styles.label}>
         Repo URL :
         <input
           type="text"
@@ -96,6 +79,22 @@ export default function ProjectEdit({
       <label className={styles.label}>
         Compétences :
         <SkillEditor selected={skills} onChange={onSkillChange} />
+      </label>
+ <label className={styles.label}>
+        Image :
+        {preview ? (
+          <img src={preview} className={styles.image} alt="Preview" />
+        ) : project.imglink ? (
+          <img src={project.imglink} className={styles.image} alt={project.title} />
+        ) : (
+          <i className={styles.noImage}>Pas d’image</i>
+        )}
+        <input
+          type="file"
+          accept="image/*"
+          className={styles.fileInput}
+          onChange={(e) => onImageChange(project.id, e.target.files[0])}
+        />
       </label>
 
       <div className={styles.buttons}>

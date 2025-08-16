@@ -1,3 +1,4 @@
+// components/Projects/ProjectCard.jsx
 'use client';
 
 import Link from 'next/link';
@@ -8,7 +9,7 @@ export default function ProjectCard({
   title,
   description,
   imgSrc,
-  skills,
+  skills = [], // [{ name, link }]
   repourl,
   demourl,
 }) {
@@ -31,12 +32,12 @@ export default function ProjectCard({
         {(repourl || demourl) && (
           <div className={styles.links}>
             {repourl && (
-              <Link href={repourl} target='_blank' className={styles.button}>
+              <Link href={repourl} target="_blank" rel="noreferrer" className={styles.button}>
                 Code
               </Link>
             )}
             {demourl && (
-              <Link href={demourl} target='_blank' className={styles.button}>
+              <Link href={demourl} target="_blank" rel="noreferrer" className={styles.button}>
                 Demo
               </Link>
             )}

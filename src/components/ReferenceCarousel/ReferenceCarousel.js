@@ -42,7 +42,7 @@ export default function ReferenceCarousel() {
           const isMobile =
             typeof window !== 'undefined' && window.innerWidth <= 768;
           const shortText =
-            quote.text.slice(0, 200) + (quote.text.length > 100 ? '…' : '');
+            quote.text.slice(0, 150) + (quote.text.length > 100 ? '…' : '');
 
           return (
             <article className={styles.articleRef}>

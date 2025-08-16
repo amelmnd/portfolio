@@ -215,7 +215,7 @@ export default function WorkList() {
 
               {/* 📌 Affichage des compétences */}
               <div>
-                <strong>Compétences :</strong>{' '}
+                <strong>Compétences :</strong>
                 {workSkills[item.id]?.length
                   ? workSkills[item.id].map((s) => s.name).join(', ')
                   : <i>Aucune</i>}

@@ -1,4 +1,4 @@
-// components/SkillTags.js
+// components/SkillTags.jsx
 import styles from './SkillTags.module.css';
 
 export default function SkillTags({ skills = [] }) {
@@ -7,9 +7,19 @@ export default function SkillTags({ skills = [] }) {
   return (
     <div className={styles.skills}>
       {skills.map((skill, index) => (
-        <span key={index} className={styles.skill}>
-          {skill}
-        </span>
+        <div key={index} >
+          {skill.link ? (
+            <img
+              src={skill.link}
+              alt={skill.name}
+              className={styles.icon}
+            />
+          ) : (
+            <div className={styles.skill}>
+            <span >{skill.name}</span>
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

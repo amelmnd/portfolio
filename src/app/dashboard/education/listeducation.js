@@ -237,7 +237,7 @@ export default function EducationList() {
 
               {/* 📌 Affichage des compétences */}
               <div>
-                <strong>Compétences :</strong>{' '}
+                <strong>Compétences :</strong>
                 {educationSkills[item.id]?.length
                   ? educationSkills[item.id].map((s) => s.name).join(', ')
                   : <i>Aucune</i>}

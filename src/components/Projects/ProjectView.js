@@ -26,11 +26,11 @@ export default function ProjectView({ project, skills, onEdit, onDelete }) {
         )}
       </div>
       <div>
-        <strong>Date :</strong>{' '}
+        <strong>Date :</strong>
         {project.date ? new Date(project.date).toLocaleDateString() : '(non renseignée)'}
       </div>
       <div>
-        <strong>Skills :</strong>{' '}
+        <strong>Skills :</strong>
         {skills.length ? skills.map((s) => s.name).join(', ') : <i>Aucune</i>}
       </div>
       <div className={styles.buttons}>

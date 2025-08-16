@@ -45,6 +45,9 @@ export default function Dashboard() {
         <Link href='/dashboard/work' className={styles.navLink}>
           Work
         </Link>
+        <Link href='/dashboard/skills' className={styles.navLink}>
+          Skills
+        </Link>
       </nav>
     </div>
   );

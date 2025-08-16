@@ -67,7 +67,7 @@ export default function Header() {
           >
             {isMenuOpen ? '✖' : '☰'}
           </button>
-        )}{' '}
+        )}
         {isMobile && isMenuOpen && (
           <nav className={styles.mobileNav}>{links}</nav>
         )}

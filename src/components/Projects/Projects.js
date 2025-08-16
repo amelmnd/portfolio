@@ -17,46 +17,42 @@ export default function Projects() {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        // Récupère les projets favoris
+        // Favoris avec skills (name + link)
         const { data: favProjects, error: favError } = await supabase
           .from('projects')
-          .select(
-            `
+          .select(`
             *,
             project_skills:project_skills!project_skills_project_id_fkey (
-              skills:skills!project_skills_skill_id_fkey ( name )
+              skills:skills!project_skills_skill_id_fkey ( name, link )
             )
-          `
-          )
+          `)
           .eq('fav', true)
           .order('date', { ascending: false });
 
         if (favError) throw favError;
 
-        let allProjects = favProjects || [];
+        let all = favProjects || [];
 
-        // Complète si moins de 4 projets
-        if (allProjects.length < 4) {
+        // Compléter si < 4
+        if (all.length < 4) {
           const { data: otherProjects, error: otherError } = await supabase
             .from('projects')
-            .select(
-              `
+            .select(`
               *,
               project_skills:project_skills!project_skills_project_id_fkey (
-                skills:skills!project_skills_skill_id_fkey ( name )
+                skills:skills!project_skills_skill_id_fkey ( name, link )
               )
-            `
-            )
+            `)
             .eq('fav', false)
             .order('date', { ascending: false })
-            .limit(4 - allProjects.length);
+            .limit(4 - all.length);
 
           if (otherError) throw otherError;
 
-          allProjects = [...allProjects, ...(otherProjects || [])];
+          all = [...all, ...(otherProjects || [])];
         }
 
-        setProjects(allProjects);
+        setProjects(all);
       } catch (error) {
         alert('Erreur lors du chargement des projets : ' + error.message);
       } finally {
@@ -67,8 +63,26 @@ export default function Projects() {
     fetchProjects();
   }, []);
 
+  const renderCard = (project) => (
+    <ProjectCard
+      key={project.id}
+      title={project.title}
+      description={project.description}
+      imgSrc={project.imglink}
+      // ⬇️ Passe des objets { name, link } pour SkillTags
+      skills={
+        project.project_skills?.map((ps) => ({
+          name: ps?.skills?.name || '',
+          link: ps?.skills?.link || '',
+        })) || []
+      }
+      repourl={project.repourl}
+      demourl={project.demourl}
+    />
+  );
+
   return (
-    <section className={styles.projects} id='projects'>
+    <section className={styles.projects} id="projects">
       <div className={styles.text}>
         <h2 className={styles.title}>Mes projets préférés</h2>
         <p className={styles.subtitle}>
@@ -76,49 +90,23 @@ export default function Projects() {
           d&apos;eux fait partie de mes projets préférés et les plus aboutis.
         </p>
         <p className={styles.subtitle}>
-          Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans{' '}
-          <Link href='/projects' className={styles.link}>
-            mon bac à sable de test
+          Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans&nbsp;
+          <Link href="/projects" className={styles.link}>
+            mon bac à sable.
           </Link>
           .
         </p>
       </div>
+
       {loading ? (
         <p>Chargement des projets...</p>
       ) : projects.length === 0 ? (
         <p>Aucun projet trouvé.</p>
       ) : isMobile ? (
-        <Carousel
-          items={projects}
-          renderItem={(project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              description={project.description}
-              imgSrc={project.imglink}
-              skills={
-                project.project_skills?.map((ps) => ps.skills?.name) || []
-              }
-              repourl={project.repourl}
-              demourl={project.demourl}
-            />
-          )}
-        />
+        <Carousel items={projects} renderItem={renderCard} />
       ) : (
         <div className={styles.grid}>
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              description={project.description}
-              imgSrc={project.imglink}
-              skills={
-                project.project_skills?.map((ps) => ps.skills?.name) || []
-              }
-              repourl={project.repourl}
-              demourl={project.demourl}
-            />
-          ))}
+          {projects.map((project) => renderCard(project))}
         </div>
       )}
     </section>
