@@ -80,8 +80,10 @@
   background: var(--button-text);
 }
 
-@media (max-width: 568px) {
-	.imageContainer {
-		display: none;
-	}
+@media (max-width: 768px) {
+  .card {
+    margin: 0 auto;
+	width: 80vw;
+
+  }
 }

@@ -99,7 +99,6 @@
 
 @media (max-width: 768px) {
   .columnsContainer {
-    flex-direction: column;
     gap: 1.5rem;
   }
   .column {

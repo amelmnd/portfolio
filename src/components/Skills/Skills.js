@@ -4,17 +4,25 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import styles from "./Skills.module.css";
 import Link from "next/link";
-import Image from "next/image";
 
-export default function Skills({ usage }) {
+export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchSkills() {
       setLoading(true);
+
       const { data, error } = await supabase
-        .rpc("get_skills_with_usage", { p_usage: usage });
+        .from("project_skills")
+        .select(`
+          skills (
+            id,
+            name,
+            type,
+            link
+          )
+        `);
 
       if (error) {
         console.error("Erreur chargement compétences :", error);
@@ -22,59 +30,66 @@ export default function Skills({ usage }) {
         return;
       }
 
-      // Filtrer uniquement les skills avec un type défini
-      const filteredSkills = data.filter(skill => skill.type && skill.type.trim() !== "");
+      // extraire les objets skills
+      const usedSkills = data.map((row) => row.skills);
 
-      setSkills(filteredSkills);
+      // ⚡️ enlever les doublons par id
+      const uniqueSkills = [
+        ...new Map(usedSkills.map((s) => [s.id, s])).values(),
+      ];
+
+      // ⚡️ filtrer si tu veux seulement ceux avec un type défini
+      const filtered = uniqueSkills.filter(
+        (s) => s?.type && String(s.type).trim() !== ""
+      );
+
+      setSkills(filtered);
       setLoading(false);
     }
 
     fetchSkills();
-  }, [usage]);
+  }, []);
 
   if (loading) return <p>Chargement...</p>;
 
   // Regrouper par type
-  const skillsByType = {};
-  skills.forEach((skill) => {
-    if (!skillsByType[skill.type]) skillsByType[skill.type] = [];
-    skillsByType[skill.type].push(skill);
-  });
+  const skillsByType = skills.reduce((acc, s) => {
+    if (!acc[s.type]) acc[s.type] = [];
+    acc[s.type].push(s);
+    return acc;
+  }, {});
 
   return (
-    <section className={styles.skills} id='skills'>
+    <section className={styles.skills} id="skills">
       <div className={styles.text}>
         <h2 className={styles.title}>Mes compétences</h2>
         <p className={styles.subtitle}>
-          Voici quelques compétences. Chacune provient d'une formation, d'une expérience professionnelle ou d'un projet présenté ici ou dans mon&nbsp;
-          <Link href='/projects' className={styles.link}>
+          Voici quelques compétences issues de mes projets, formations ou
+          expériences. Découvrez-en plus dans mon&nbsp;
+          <Link href="/projects" className={styles.link}>
             bac à sable
           </Link>.
         </p>
       </div>
+
       <div className={styles.columnsContainer}>
-        {Object.entries(skillsByType).map(([type, skills]) => (
+        {Object.entries(skillsByType).map(([type, group]) => (
           <div key={type} className={styles.column}>
             <h3 className={styles.typeTitle}>{type}</h3>
-            {skills.map((skill, index) => {
-              const iconName = skill.name
-                .toLowerCase()
-                + ".png";
-
-              return (
-                <div key={`${skill.id}-${index}`} className={styles.skillItem}>
-                  <Image
-                    src={`/techno-logo/${iconName}`}
+            {group.map((skill) => (
+              <div key={skill.id} className={styles.skillItem}>
+                {skill.link && (
+                  <img
+                    src={skill.link}
                     alt={skill.name}
                     className={styles.skillIcon}
-                    onError={(e) => (e.target.style.display = "none")}
-					width={30}
-					height={30}
+                    onError={(e) => (e.currentTarget.style.display = "none")}
+                    loading="lazy"
                   />
-                  <p className={styles.skillName}>{skill.name}</p>
-                </div>
-              );
-            })}
+                )}
+                <p className={styles.skillName}>{skill.name}</p>
+              </div>
+            ))}
           </div>
         ))}
       </div>

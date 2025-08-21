@@ -102,8 +102,6 @@ export default function Projects() {
         <p>Chargement des projets...</p>
       ) : projects.length === 0 ? (
         <p>Aucun projet trouvé.</p>
-      ) : isMobile ? (
-        <Carousel items={projects} renderItem={renderCard} />
       ) : (
         <div className={styles.grid}>
           {projects.map((project) => renderCard(project))}
