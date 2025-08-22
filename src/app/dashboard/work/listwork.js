@@ -15,7 +15,6 @@ export default function WorkList() {
   const fetchItems = async () => {
     setLoading(true);
 
-    // 📌 Récupération des expériences
     const { data: workData, error: workError } = await supabase
       .from('work')
       .select('*')
@@ -27,7 +26,6 @@ export default function WorkList() {
       return;
     }
 
-    // 📌 Récupération des liens work <-> skills
     const { data: links, error: skillsError } = await supabase
       .from('work_skills')
       .select('work_id, skills ( id, name )');
@@ -38,7 +36,6 @@ export default function WorkList() {
       return;
     }
 
-    // 📌 Mapping des compétences
     const skillMap = {};
     links?.forEach((link) => {
       const skill = link.skills;
@@ -79,7 +76,6 @@ export default function WorkList() {
       return;
     }
 
-    // 📌 Mise à jour des compétences
     await supabase.from('work_skills').delete().eq('work_id', item.id);
 
     const currentSkills = workSkills[item.id] || [];

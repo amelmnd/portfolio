@@ -42,3 +42,7 @@
 .Hackerrank:hover .skillIcon {
   color: var(--hackerrank-color);
 }
+
+.Labo:hover .skillIcon {
+  color: var(--labo-color);
+}

@@ -4,9 +4,18 @@ import styles from './SocialIcons.module.css'
 import { Icon } from '@iconify/react'
 import CodingameIcon from '../../assets/codingameIcon.png';
 import Image from 'next/image';
+import Tooltip from '../Tooltip/Tooltip';
+
 
 export default function SocialIcons({ width = 32, height = 32 }) {
 	const socialLinks = [
+    {
+      title: 'Labo',
+      icon: 'cil:beaker',
+      href: 'https://amellabo.netlify.app/',
+      isCustom: false,
+      active: true,
+    },
     {
       title: 'Email',
       icon: 'wpf:message',
@@ -61,29 +70,30 @@ export default function SocialIcons({ width = 32, height = 32 }) {
       {socialLinks
         .filter((item) => item.active)
         .map(({ title, icon, href, isCustom }) => (
-          <Link
-            key={title}
-            href={href}
-            target='_blank'
-            rel='nofollow noreferrer noopener'
-            className={`${styles.iconLink} ${styles[title]}`}
-          >
-            {isCustom ? (
-              <Image
-                src={CodingameIcon}
-                alt='Codingame'
-                width={32}
-                height={32}
-              />
-            ) : (
-              <Icon
-                icon={icon}
-                width={width}
-                height={height}
-                className={styles.skillIcon}
-              />
-            )}
-          </Link>
+          <Tooltip key={title} message={title}>
+            <Link
+              href={href}
+              target='_blank'
+              rel='nofollow noreferrer noopener'
+              className={`${styles.iconLink} ${styles[title]}`}
+            >
+              {isCustom ? (
+                <Image
+                  src={CodingameIcon}
+                  alt={title}
+                  width={width}
+                  height={height}
+                />
+              ) : (
+                <Icon
+                  icon={icon}
+                  width={width}
+                  height={height}
+                  className={styles.skillIcon}
+                />
+              )}
+            </Link>
+          </Tooltip>
         ))}
     </div>
   );

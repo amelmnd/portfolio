@@ -27,7 +27,6 @@ export default function EducationList() {
       return;
     }
 
-    // 📌 Récupère les liens éducation <-> skills
     const { data: skillLinks, error: skillError } = await supabase
       .from('education_skills')
       .select('education_id, skills ( id, name )');
@@ -38,7 +37,6 @@ export default function EducationList() {
       return;
     }
 
-    // 📌 Structure en { education_id: [skills...] }
     const skillMap = {};
     skillLinks?.forEach((link) => {
       const skill = link.skills;
@@ -83,7 +81,6 @@ export default function EducationList() {
       return;
     }
 
-    // 📌 Met à jour les compétences liées
     await supabase.from('education_skills').delete().eq('education_id', item.id);
 
     const currentSkills = educationSkills[item.id] || [];

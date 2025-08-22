@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import styles from '../../AddProject.module.css'; // ✅ même CSS que AddProject
+import styles from '../../AddProject.module.css';
 import SkillEditor from '@/components/SkillSelector/SkillEditor';
 import SkillSelector from '@/components/SkillSelector/SkillSelector';
 import ReturnButton from '@/components/ReturnButton/ReturnButton';

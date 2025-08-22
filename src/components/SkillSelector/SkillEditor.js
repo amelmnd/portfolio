@@ -44,7 +44,6 @@ export default function SkillEditor({ selected = [], onChange }) {
     const trimmed = inputValue.trim();
     if (!trimmed) return;
 
-    // 🔍 Recherche insensible à la casse
     const existingSkill = allSkills.find(
       (s) => s.name.toLowerCase() === trimmed.toLowerCase()
     );
@@ -53,7 +52,6 @@ export default function SkillEditor({ selected = [], onChange }) {
     if (existingSkill) {
       skillToAdd = existingSkill;
     } else {
-      // ➕ Création de la nouvelle skill
       const { data, error } = await supabase
         .from('skills')
         .insert([{ name: trimmed }])
@@ -68,7 +66,6 @@ export default function SkillEditor({ selected = [], onChange }) {
       setAllSkills((prev) => [...prev, skillToAdd]);
     }
 
-    // ✅ Ajout à la sélection
     if (!selectedSkills.find((s) => s.id === skillToAdd.id)) {
       const updated = [...selectedSkills, skillToAdd];
       setSelectedSkills(updated);
@@ -85,14 +82,12 @@ export default function SkillEditor({ selected = [], onChange }) {
     }
   };
 
-  // 🔎 Suggestions filtrées
   const filteredSuggestions = allSkills.filter((s) =>
     s.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   return (
     <div className={styles.skillEditor}>
-      {/* 🔹 Input d'ajout avec auto-complétion */}
       <div className={styles.skillInputContainer}>
         <input
           type="text"
@@ -112,7 +107,6 @@ export default function SkillEditor({ selected = [], onChange }) {
       </div>
 
 
-      {/* 🔹 Liste des suggestions */}
       {inputValue && filteredSuggestions.length > 0 && (
         <div className={styles.suggestions}>
           {filteredSuggestions.map((skill) => (
@@ -129,8 +123,6 @@ export default function SkillEditor({ selected = [], onChange }) {
         </div>
       )}
 
-
-      {/* 🔹 Boutons de sélection */}
       <div className={styles.skillButtons}>
         {allSkills.map((skill) => (
           <button

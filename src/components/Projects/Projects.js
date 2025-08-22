@@ -17,7 +17,6 @@ export default function Projects() {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        // Favoris avec skills (name + link)
         const { data: favProjects, error: favError } = await supabase
           .from('projects')
           .select(`
@@ -33,7 +32,6 @@ export default function Projects() {
 
         let all = favProjects || [];
 
-        // Compléter si < 4
         if (all.length < 4) {
           const { data: otherProjects, error: otherError } = await supabase
             .from('projects')
@@ -69,7 +67,6 @@ export default function Projects() {
       title={project.title}
       description={project.description}
       imgSrc={project.imglink}
-      // ⬇️ Passe des objets { name, link } pour SkillTags
       skills={
         project.project_skills?.map((ps) => ({
           name: ps?.skills?.name || '',

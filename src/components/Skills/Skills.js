@@ -30,15 +30,12 @@ export default function Skills() {
         return;
       }
 
-      // extraire les objets skills
       const usedSkills = data.map((row) => row.skills);
 
-      // ⚡️ enlever les doublons par id
       const uniqueSkills = [
         ...new Map(usedSkills.map((s) => [s.id, s])).values(),
       ];
 
-      // ⚡️ filtrer si tu veux seulement ceux avec un type défini
       const filtered = uniqueSkills.filter(
         (s) => s?.type && String(s.type).trim() !== ""
       );
@@ -52,7 +49,6 @@ export default function Skills() {
 
   if (loading) return <p>Chargement...</p>;
 
-  // Regrouper par type
   const skillsByType = skills.reduce((acc, s) => {
     if (!acc[s.type]) acc[s.type] = [];
     acc[s.type].push(s);

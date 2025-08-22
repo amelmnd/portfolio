@@ -50,7 +50,7 @@ export default function Header() {
               isDark ? '/img/logos/logoDark.png' : '/img/logos/logoLight.png'
             }
             alt='Logo'
-            width={120} // adapte à la taille de ton image
+            width={120}
             height={40}
             className={styles.logo}
           />
