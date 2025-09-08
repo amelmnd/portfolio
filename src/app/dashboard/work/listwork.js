@@ -176,7 +176,7 @@ export default function WorkList() {
               </label>
 
               <label>
-                Poste actuel:
+                Activer:
                 <input
                   type="checkbox"
                   checked={item.active || false}
@@ -207,7 +207,7 @@ export default function WorkList() {
               <p>{item.job} – {item.location_type} ({item.location})</p>
               <p><strong>Période:</strong> {item.startDate} → {item.endDate}</p>
               <p>{item.summary || <i>Pas de résumé</i>}</p>
-              <div><strong>Poste actuel:</strong> {item.active ? '✅' : '❌'}</div>
+              <div><strong>Activer:</strong> {item.active ? '✅' : '❌'}</div>
 
               {/* 📌 Affichage des compétences */}
               <div>

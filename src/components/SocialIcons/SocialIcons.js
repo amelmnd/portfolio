@@ -21,7 +21,7 @@ export default function SocialIcons({ width = 32, height = 32 }) {
       icon: 'wpf:message',
       href: 'mailto:amelmnd.dev@gmail.com',
       isCustom: false,
-      active: true,
+      active: false,
     },
     {
       title: 'LinkedIn',
@@ -41,7 +41,7 @@ export default function SocialIcons({ width = 32, height = 32 }) {
       icon: 'simple-icons:codepen',
       href: 'https://codepen.io/amel_dev',
       isCustom: false,
-      active: false,
+      active: true,
     },
     {
       title: 'Freecodecamp',
