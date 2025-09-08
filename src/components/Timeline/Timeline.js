@@ -56,7 +56,7 @@ export default function Timeline() {
       const { data: educationData } = await supabase
         .from('education')
         .select('*')
-        .eq('visibility', true);
+        .eq('active', true);
       setEducation(educationData || []);
     }
     fetchData();
