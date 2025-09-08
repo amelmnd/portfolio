@@ -13,7 +13,7 @@ const parseDate = (dateStr) => {
     : date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'short' });
 };
 
-const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType, type }) => (
+const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType, type, tagLabel, skills }) => (
   <div className={`${styles.timelineContent} ${styles[type]}`}>
     <div className={styles.timelineContentInside}>
       <div className={styles.timelinePeriod}>
@@ -22,8 +22,28 @@ const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType
       <div className={styles.timelineTitle}>{title}</div>
       <p className={styles.timelineSubtitle}>{subtitle}</p>
       <p className={styles.timelineLocation}>{location}</p>
-      <p className={styles.timelineTag}>{type}</p>
+      <p className={styles.timelineTag}>{tagLabel}</p>
       {studyType && <p className={styles.timelineTag}>{studyType}</p>}
+
+      {/* Affichage des skills */}
+      {skills?.length > 0 && (
+        <div className={styles.timelineSkills}>
+          {skills.map((skill) => (
+            <div key={skill.id} className={styles.skillItem}>
+              {skill.link && (
+                <img
+                  src={skill.link}
+                  alt={skill.name}
+                  className={styles.skillIcon}
+                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                  loading="lazy"
+                />
+              )}
+              <span className={styles.skillName}>{skill.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   </div>
 );
@@ -47,17 +67,35 @@ export default function Timeline() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: workData } = await supabase
-        .from('work')
-        .select('*')
-        .eq('active', true);
-      setWork(workData || []);
+      try {
+        // --- Work avec skills ---
+        const { data: workData, error: workError } = await supabase
+          .from('work')
+          .select(`
+            *,
+            work_skills (
+              skills(id, name, type, link)
+            )
+          `)
+          .eq('active', true);
+        if (workError) throw workError;
+        setWork(workData || []);
 
-      const { data: educationData } = await supabase
-        .from('education')
-        .select('*')
-        .eq('active', true);
-      setEducation(educationData || []);
+        // --- Education avec skills ---
+        const { data: educationData, error: eduError } = await supabase
+          .from('education')
+          .select(`
+            *,
+            education_skills (
+              skills(id, name, type, link)
+            )
+          `)
+          .eq('active', true);
+        if (eduError) throw eduError;
+        setEducation(educationData || []);
+      } catch (err) {
+        console.error('Erreur Supabase:', err);
+      }
     }
     fetchData();
   }, []);
@@ -75,25 +113,30 @@ export default function Timeline() {
     };
   }, [work, education]);
 
-  const workEvents = work.map(item => ({
+  // Mapping des events avec skills et tagLabel personnalisé
+  const workEvents = (work || []).map((item) => ({
     ...item,
-    type: 'work',
+    type: 'work',        // pour le style CSS existant
+    tagLabel: 'Exp pro', // affichage du tag
     title: item.enterpriseName,
     subtitle: item.job,
     startDate: item.startDate,
     endDate: item.endDate || '...',
     location: item.location || '—',
+    skills: item.work_skills?.map(ws => ws.skills) || [],
   }));
 
-  const educationEvents = education.map(item => ({
+  const educationEvents = (education || []).map((item) => ({
     ...item,
-    type: 'education',
+    type: 'education',       // pour le style CSS existant
+    tagLabel: 'Formation',   // affichage du tag
     title: item.studyType,
     subtitle: item.institution,
     startDate: item.startDate,
     endDate: item.endDate || '...',
     location: item.location || '—',
     studyType: item.studyType,
+    skills: item.education_skills?.map(es => es.skills) || [],
   }));
 
   const allEvents = [...workEvents, ...educationEvents].sort(
@@ -140,6 +183,8 @@ export default function Timeline() {
               location={event.location}
               studyType={event.studyType}
               type={event.type}
+              tagLabel={event.tagLabel}
+              skills={event.skills}
             />
           ))}
         </div>
