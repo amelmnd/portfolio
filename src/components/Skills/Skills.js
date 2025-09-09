@@ -14,45 +14,39 @@ export default function Skills() {
       setLoading(true);
 
       try {
-        // --- Récupération des skills liées aux projets
+        // --- Skills projets ---
         const { data: projectSkills, error: projectError } = await supabase
           .from("project_skills")
-          .select("skills ( id, name, type, link )");
-
+          .select("skill:skills(id, name, type, link)");
         if (projectError) throw projectError;
 
-        // --- Récupération des skills liées aux expériences pro
+        // --- Skills work ---
         const { data: workSkills, error: workError } = await supabase
           .from("work_skills")
-          .select("skills ( id, name, type, link )");
-
+          .select("skill:skills(id, name, type, link)");
         if (workError) throw workError;
 
-        // --- Récupération des skills liées aux formations
+        // --- Skills education ---
         const { data: eduSkills, error: eduError } = await supabase
           .from("education_skills")
-          .select("skills ( id, name, type, link )");
-
+          .select("skill:skills(id, name, type, link)");
         if (eduError) throw eduError;
 
-        // --- Fonction d’annotation de l’origine
         function annotateSkills(rows, origin) {
           return (rows ?? []).map((row) => ({
-            ...row.skills,
+            ...row.skill,
             origins: [origin],
           }));
         }
 
-        // --- Fusion des 3 sources
         const allSkills = [
           ...annotateSkills(projectSkills, "Projet"),
           ...annotateSkills(workSkills, "Exp pro"),
           ...annotateSkills(eduSkills, "Formation"),
         ];
 
-        // --- Dédoublonnage + fusion des origines
+        // Dédoublonnage et fusion des origines
         const uniqueSkillsMap = new Map();
-
         allSkills.forEach((skill) => {
           if (!skill) return;
           if (uniqueSkillsMap.has(skill.id)) {
@@ -67,7 +61,7 @@ export default function Skills() {
 
         const uniqueSkills = Array.from(uniqueSkillsMap.values());
 
-        // --- On garde uniquement ceux qui ont un type valide
+        // Filtre type valide
         const filtered = uniqueSkills.filter(
           (s) => s?.type && String(s.type).trim() !== ""
         );
@@ -85,7 +79,6 @@ export default function Skills() {
 
   if (loading) return <p>Chargement...</p>;
 
-  // --- Regrouper par type
   const skillsByType = skills.reduce((acc, s) => {
     if (!acc[s.type]) acc[s.type] = [];
     acc[s.type].push(s);
@@ -121,12 +114,9 @@ export default function Skills() {
                   />
                 )}
                 <div className={styles.skillBoxName}>
-                  <p className={styles.skillName}>
-                    {skill.name}{" "}
-                    
-                  </p>
+                  <p className={styles.skillName}>{skill.name}</p>
                   <p className={styles.skillOrigins}>
-                        ({skill.origins.join(", ")})
+                    ({skill.origins.join(", ")})
                   </p>
                 </div>
               </div>

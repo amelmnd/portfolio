@@ -1,19 +1,29 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useRef } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import styles from './Timeline.module.css';
-import { Icon } from '@iconify/react';
+import React, { useEffect, useState, useRef } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import styles from "./Timeline.module.css";
+import { Icon } from "@iconify/react";
 
 const parseDate = (dateStr) => {
-  if (!dateStr) return 'Présent';
+  if (!dateStr) return "Présent";
   const date = new Date(dateStr);
   return isNaN(date)
     ? dateStr
-    : date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'short' });
+    : date.toLocaleDateString("fr-FR", { year: "numeric", month: "short" });
 };
 
-const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType, type, tagLabel, skills }) => (
+const TimelineItem = ({
+  title,
+  subtitle,
+  startDate,
+  endDate,
+  location,
+  studyType,
+  type,
+  tagLabel,
+  skills,
+}) => (
   <div className={`${styles.timelineContent} ${styles[type]}`}>
     <div className={styles.timelineContentInside}>
       <div className={styles.timelinePeriod}>
@@ -25,7 +35,6 @@ const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType
       <p className={styles.timelineTag}>{tagLabel}</p>
       {studyType && <p className={styles.timelineTag}>{studyType}</p>}
 
-      {/* Affichage des skills */}
       {skills?.length > 0 && (
         <div className={styles.timelineSkills}>
           {skills.map((skill) => (
@@ -35,7 +44,7 @@ const TimelineItem = ({ title, subtitle, startDate, endDate, location, studyType
                   src={skill.link}
                   alt={skill.name}
                   className={styles.skillIcon}
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                  onError={(e) => (e.currentTarget.style.display = "none")}
                   loading="lazy"
                 />
               )}
@@ -70,31 +79,33 @@ export default function Timeline() {
       try {
         // --- Work avec skills ---
         const { data: workData, error: workError } = await supabase
-          .from('work')
+          .from("work")
           .select(`
             *,
             work_skills (
-              skills(id, name, type, link)
+              skill:skills(id, name, type, link)
             )
           `)
-          .eq('active', true);
+          .eq("active", true);
+
         if (workError) throw workError;
         setWork(workData || []);
 
         // --- Education avec skills ---
         const { data: educationData, error: eduError } = await supabase
-          .from('education')
+          .from("education")
           .select(`
             *,
             education_skills (
-              skills(id, name, type, link)
+              skill:skills(id, name, type, link)
             )
           `)
-          .eq('active', true);
+          .eq("active", true);
+
         if (eduError) throw eduError;
         setEducation(educationData || []);
       } catch (err) {
-        console.error('Erreur Supabase:', err);
+        console.error("Erreur Supabase:", err);
       }
     }
     fetchData();
@@ -105,38 +116,37 @@ export default function Timeline() {
     updateArrowStates();
     const onScroll = () => updateArrowStates();
     const onResize = () => updateArrowStates();
-    el?.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
+    el?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     return () => {
-      el?.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
+      el?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, [work, education]);
 
-  // Mapping des events avec skills et tagLabel personnalisé
   const workEvents = (work || []).map((item) => ({
     ...item,
-    type: 'work',        // pour le style CSS existant
-    tagLabel: 'Exp pro', // affichage du tag
+    type: "work",
+    tagLabel: "Exp pro",
     title: item.enterpriseName,
     subtitle: item.job,
     startDate: item.startDate,
-    endDate: item.endDate || '...',
-    location: item.location || '—',
-    skills: item.work_skills?.map(ws => ws.skills) || [],
+    endDate: item.endDate || "...",
+    location: item.location || "—",
+    skills: item.work_skills?.map((ws) => ws.skill) || [],
   }));
 
   const educationEvents = (education || []).map((item) => ({
     ...item,
-    type: 'education',       // pour le style CSS existant
-    tagLabel: 'Formation',   // affichage du tag
+    type: "education",
+    tagLabel: "Formation",
     title: item.studyType,
     subtitle: item.institution,
     startDate: item.startDate,
-    endDate: item.endDate || '...',
-    location: item.location || '—',
+    endDate: item.endDate || "...",
+    location: item.location || "—",
     studyType: item.studyType,
-    skills: item.education_skills?.map(es => es.skills) || [],
+    skills: item.education_skills?.map((es) => es.skill) || [],
   }));
 
   const allEvents = [...workEvents, ...educationEvents].sort(
@@ -148,8 +158,8 @@ export default function Timeline() {
     if (!el) return;
     const amount = 300;
     el.scrollBy({
-      left: direction === 'left' ? -amount : amount,
-      behavior: 'smooth',
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
     });
   };
 
@@ -166,7 +176,7 @@ export default function Timeline() {
       <div className={styles.timelineWrapper}>
         <button
           className={styles.scrollButton}
-          onClick={() => scroll('left')}
+          onClick={() => scroll("left")}
           disabled={isAtStart}
         >
           <Icon icon="mdi:chevron-left" />
@@ -191,7 +201,7 @@ export default function Timeline() {
 
         <button
           className={styles.scrollButton}
-          onClick={() => scroll('right')}
+          onClick={() => scroll("right")}
           disabled={isAtEnd}
         >
           <Icon icon="mdi:chevron-right" />
