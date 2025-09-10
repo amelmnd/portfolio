@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import styles from "./Skills.module.css";
 import Link from "next/link";
+import Loader from '../Loader/Loader';
 
 export default function Skills() {
   const [skills, setSkills] = useState([]);
@@ -77,7 +78,7 @@ export default function Skills() {
     fetchSkills();
   }, []);
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return <Loader />;
 
   const skillsByType = skills.reduce((acc, s) => {
     if (!acc[s.type]) acc[s.type] = [];
