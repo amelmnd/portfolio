@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '../../context/AuthProvider';
 import styles from './Dashboard.module.css';
 import Loader from '@/components/Loader/Loader';
+import Login from '../login/page';
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
@@ -21,7 +22,7 @@ export default function Dashboard() {
   }
 
   if (!user) {
-    return <p>Non connecté</p>;
+    return <Login />;
   }
 
   return (
