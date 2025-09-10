@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import styles from "./Timeline.module.css";
 import { Icon } from "@iconify/react";
+import SkillTags from '../SkillTags/SkillsTags';
 
 const parseDate = (dateStr) => {
   if (!dateStr) return "Présent";
@@ -37,20 +38,7 @@ const TimelineItem = ({
 
       {skills?.length > 0 && (
         <div className={styles.timelineSkills}>
-          {skills.map((skill) => (
-            <div key={skill.id} className={styles.skillItem}>
-              {skill.link && (
-                <img
-                  src={skill.link}
-                  alt={skill.name}
-                  className={styles.skillIcon}
-                  onError={(e) => (e.currentTarget.style.display = "none")}
-                  loading="lazy"
-                />
-              )}
-              <span className={styles.skillName}>{skill.name}</span>
-            </div>
-          ))}
+          <SkillTags skills={skills} />
         </div>
       )}
     </div>
