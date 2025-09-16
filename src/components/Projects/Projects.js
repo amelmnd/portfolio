@@ -7,6 +7,7 @@ import Carousel from '../Carousel/Carousel';
 import styles from './Projects.module.css';
 import { supabase } from '../../lib/supabaseClient';
 import useMediaQuery from '../../hook/useMediaQuery';
+import socialLinks from '@/data/socialLinks';
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
@@ -86,13 +87,15 @@ export default function Projects() {
           Voici quelques projets sur lesquels j&apos;ai travaillé, chacun
           d&apos;eux fait partie de mes projets préférés et les plus aboutis.
         </p>
-        <p className={styles.subtitle}>
+        { socialLinks[0].active &&
+          <p className={styles.subtitle}>
           Mais ce ne sont pas les seuls. Pour en voir plus, rendez-vous dans&nbsp;
-          <Link href="/projects" className={styles.link}>
-            mon bac à sable.
+          <Link href={socialLinks[0].href} className={styles.link} target="_blank">
+            mon laboratoire
           </Link>
           .
         </p>
+        }
       </div>
 
       {loading ? (

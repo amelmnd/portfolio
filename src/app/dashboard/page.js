@@ -2,27 +2,32 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthProvider';
 import styles from './Dashboard.module.css';
 import Loader from '@/components/Loader/Loader';
-import Login from '../login/page';
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     if (user !== undefined) {
       setLoading(false);
+      if (!user) {
+        // Redirection vers login si l'utilisateur n'est pas connecté
+        router.push('/login');
+      }
     }
-  }, [user]);
+  }, [user, router]);
 
   if (loading) {
     return <Loader />;
   }
 
   if (!user) {
-    return <Login />;
+    return null; // on ne retourne rien, la redirection se fait déjà
   }
 
   return (

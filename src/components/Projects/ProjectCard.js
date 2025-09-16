@@ -8,7 +8,7 @@ export default function ProjectCard({
   title,
   description,
   imgSrc,
-  skills = [], // [{ name, link }]
+  skills = [], 
   repourl,
   demourl,
 }) {
@@ -18,25 +18,46 @@ export default function ProjectCard({
         {imgSrc ? (
           <img src={imgSrc} alt={title} className={styles.image} />
         ) : (
-          <div className={styles.imagePlaceholder}>Pas d’image</div>
+          <img
+            src="/img/imageNotFound.png"
+            alt="image non trouvé"
+            className={styles.image}
+          />
         )}
       </div>
 
       <div className={styles.content}>
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.description}>{description}</p>
+        <div className={styles.boxTitle}>
+          <h3 className={styles.title}>{title}</h3>
+        </div>
 
-        <SkillTags skills={skills} />
+        <div className={styles.boxDescrit}>
+          <p className={styles.description}>{description}</p>
+        </div>
+
+        <div className={styles.boxSkills}>
+          <SkillTags skills={skills} />
+        </div>
 
         {(repourl || demourl) && (
-          <div className={styles.links}>
+          <div className={styles.boxLink}>
             {repourl && (
-              <Link href={repourl} target="_blank" rel="noreferrer" className={styles.button}>
+              <Link
+                href={repourl}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.button}
+              >
                 Code
               </Link>
             )}
             {demourl && (
-              <Link href={demourl} target="_blank" rel="noreferrer" className={styles.button}>
+              <Link
+                href={demourl}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.button}
+              >
                 Demo
               </Link>
             )}
