@@ -63,7 +63,7 @@
 
 .heroImg {
   border-radius: 1rem;
-  object-fit: cover;
+  /* object-fit: cover;*/
   max-width: 100%;
 }
 

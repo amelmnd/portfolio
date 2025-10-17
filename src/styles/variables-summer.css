@@ -1,0 +1,39 @@
+:root {
+  --background: #FFF;
+  --text: #4B4B4B;
+  --heading: #2c2c2c;
+  --link: #c06c84;
+  --link-hover: #9e5b74;
+  --button-bg: #f7d1cd;
+  --button-text: #5c3d44;
+  --card-bg: #fff3f2;
+  --border: #e5c7c2;
+  --email-color: #7a557e;
+  --linkedin-color: #0A66C2;
+  --github-color: #4d4c4c;
+  --codepen-color: #98989a;
+  --freecodecamp-color: #2F5C04;
+  --codingame-color: #F2BB13;
+  --hackerrank-color: #02E963;
+  --labo-color: #825a40;
+
+}
+
+body.dark {
+  --background: #2b1e1f;
+  --text: #f7e9e7;
+  --heading: #fff0ec;
+  --link: #f5b1c2;
+  --link-hover: #fdd3da;
+  --button-bg: #6a4e52;
+  --button-text: #f7e9e7;
+  --card-bg: #3e2e30;
+  --border: #a27d81;
+  --email-color: #b98dc2;
+  --linkedin-color: #0A66C2;
+  --github-color: #d6cfcf;
+  --codepen-color: #c1c1c3;
+  --freecodecamp-color: #83a860;
+  --codingame-color: #FFD966;
+  --labo-color: #fac7a5;
+}

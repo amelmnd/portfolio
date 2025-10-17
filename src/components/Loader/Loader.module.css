@@ -2,8 +2,8 @@
 .colorPaw {
   position: fixed;
   inset: 0;
-  background-color: #eeeeee;
-  color: #4d251e; /* currentColor pour les SVG */
+  background-color: var(--background);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -4,7 +4,7 @@ import styles from './Hero.module.css'
 import SocialIcons from '../SocialIcons/SocialIcons'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
-import portrait from '../../assets/portrait.jpg'
+import portrait from '../../assets/portrait.png'
 import Image from 'next/image'
 
 export default function Hero({ width = 12, height = 22 }) {
@@ -30,7 +30,8 @@ export default function Hero({ width = 12, height = 22 }) {
 							<span className={styles.pill}>Persévérante</span>
 						</div>
 						<p className={styles.heroDescript}>
-							Salut, moi, c&apos;est Amel, Étudiante à 42 Nice et Développeuse web en reconversion. J&apos;explore le monde de la tech, je me forme, je teste, j’expérimente pour trouver mon “chez-moi” numérique et le prochain défi qui me fera vibrer autant que progresser.
+							Salut ! Moi, c&apos;est Amel, étudiante à 42 Nice et développeuse web en pleine montée en compétences. J&apos;explore le monde de la tech, je me forme, je teste, j&apos;expérimente pour trouver mon « chez-moi » numérique et le prochain défi qui me fera vibrer autant que progresser.
+
 						</p>
 						<SocialIcons width={25} height={25} /></div>
 					<Image
@@ -38,7 +39,7 @@ export default function Hero({ width = 12, height = 22 }) {
 						src={portrait}
 						alt="Portrait"
 						width="304"
-						height="354"
+						height="304"
 					/>
 				</div>
 			</div>
