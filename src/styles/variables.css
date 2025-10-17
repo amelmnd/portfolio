@@ -1,8 +1,8 @@
 :root {
   --background: #FFF;
   --text: #4B4B4B;
-  --heading: #2c2c2c;
-  --link: #c06c84;
+  --heading: #b46279;
+  --link: #b46279;
   --link-hover: #9e5b74;
   --button-bg: #f7d1cd;
   --button-text: #5c3d44;
@@ -20,20 +20,15 @@
 }
 
 body.dark {
-  /* Base (bleu nuit propre) */
   --background: #0B1220;   /* bleu marine profond */
   --text: #E6F0FF;         /* texte crème-bleuté (AAA) */
-  --heading: #F8FAFF;      /* titres lumineux */
+  --heading: #60A5FA;      /* titres lumineux */
   --link: #60A5FA;         /* bleu 400 */
   --link-hover: #93C5FD;   /* bleu 300 */
-
-  /* UI */
   --button-bg: #1E3A8A;    /* bleu 800 */
   --button-text: #E6F0FF;  /* contraste AA */
   --card-bg: #18243d;      /* panneau bleu graphite */
   --border: #2B3B62;       /* bordure bleu acier */
-
-  /* Accents */
   --email-color: #A5BFFB;
   --linkedin-color: #0A66C2;
   --github-color: #d6cfcf;
