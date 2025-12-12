@@ -1,7 +1,3 @@
-Voici une version corrigée de ton README avec les fautes de français rectifiées et le texte légèrement reformulé pour plus de clarté, tout en conservant ton style :
-
----
-
 # Portfolio - Next.js & Supabase
 
 Un **portfolio moderne** développé avec **Next.js** et **Supabase**, permettant de présenter mes **4 projets sélectionnés**, mes **formations techniques**, mes **expériences professionnelles**, ainsi que mes **compétences utilisées et démontrées**.
@@ -254,4 +250,5 @@ CREATE TABLE work_skills (
 ## 📜 Licence
 
 Projet personnel codé avec l'aide de ChatGPT – usage libre pour inspiration et apprentissage.
+
 
