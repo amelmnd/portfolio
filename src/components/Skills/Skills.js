@@ -91,9 +91,8 @@ export default function Skills() {
       <div className={styles.text}>
         <h2 className={styles.title}>Mes compétences</h2>
         <p className={styles.subtitle}>
-          Cette liste, non exhaustive, montre ce que je peux vraiment faire. 
-C’est un aperçu de mes compétences vérifiables à travers mes projets (catalogue de projets à venir), mes formations et mes expériences professionnelles.        </p>
-      </div>
+          Cette liste, non exhaustive, montre ce que je peux vraiment faire. C’est un aperçu de mes compétences vérifiables à travers mes projets (catalogue de projets à venir), mes formations et mes expériences professionnelles.        </p>
+        </div>
 
       <div className={styles.columnsContainer}>
         {Object.entries(skillsByType).map(([type, group]) => (
