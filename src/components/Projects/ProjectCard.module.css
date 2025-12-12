@@ -85,23 +85,23 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
-  gap: 8px;       /* réduit un peu l’espace entre les boxes */
+  gap: 8px;
   height: 100%;
 }
 
 .boxTitle {
-  height: 32px;    /* titre fixe */
+  height: 32px;
   display: flex;
   align-items: center;
 }
 
 .boxDescrit {
-  height: 150px;   /* description plus haute pour le texte */
+  height: 150px;
   overflow: hidden;
 }
 
 .boxSkills {
-  height: 32px;    /* réduit pour éviter l’espace énorme */
+  height: 32px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -110,7 +110,7 @@
 }
 
 .boxLink {
-  height: 40px;    /* hauteur boutons */
+  height: 40px;
   display: flex;
   gap: 8px;
   align-items: center;
