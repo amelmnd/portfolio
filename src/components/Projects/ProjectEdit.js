@@ -21,7 +21,6 @@ export default function ProjectEdit({
   const maxChars = 200; // Limite de caractères
   const [charCount, setCharCount] = useState(project.description?.length || 0);
 
-  // ✅ Nouveau state local pour le preview
   const [localPreview, setLocalPreview] = useState(preview || project.imglink || '');
 
   useEffect(() => {
@@ -41,14 +40,12 @@ export default function ProjectEdit({
 
     if (value.length <= maxChars) {
       onChange(project.id, 'description', value);
-      setCharCount(value.length);
+      setCharCount(value.length); // ✅ mise à jour du compteur
     } else {
-      // Optionnel : alerte quand la limite est dépassée
       alert(`Limite de ${maxChars} caractères atteinte !`);
     }
   };
 
-  // ✅ Nouveau handler pour le fichier
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -78,20 +75,15 @@ export default function ProjectEdit({
         <textarea
           className={styles.textarea}
           value={project.description || ''}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (value.length <= 200) {
-              onChange(project.id, 'description', value);
-            }
-          }}
+          onChange={handleDescriptionChange} // ✅ utilisation de la fonction
           maxLength={200}
         />
         <div
           className={`${styles.charCounter} ${
-            (project.description?.length || 0) >= 200 ? styles.charLimitReached : ''
+            charCount >= 200 ? styles.charLimitReached : ''
           }`}
         >
-          {(project.description?.length || 0)}/200 caractères
+          {charCount}/200 caractères
         </div>
       </label>
 
