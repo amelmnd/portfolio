@@ -44,6 +44,7 @@
 .description {
 	color: var(--text);
 	font-size: 0.95rem;
+	text-align: justify;
 }
 
 .skills {
