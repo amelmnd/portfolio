@@ -57,6 +57,7 @@ portfolio/
 * Mise en avant de mes **références** et contacts
 * Design responsive en **CSS pur**
 * **Thème** clair et sombre, modulable
+* Section **Blog** connecté à l'API dev.to
 
 ### 🛠️ Backend (Dashboard)
 
@@ -241,7 +242,6 @@ CREATE TABLE work_skills (
 ## Fonctionnalités futures
 
 * Créer la gestion des références dans Supabase
-* Ajout d’une section **Blog**
 * Ajout d’une section **Centres d’intérêts**
 * Optimisation de la **performance** et du **SEO**
 
