@@ -4,6 +4,8 @@ import Projects from '../components/Projects/Projects'
 import Contact from '../components/Contact/Contact'
 import ReferenceCarousel from '../components/ReferenceCarousel/ReferenceCarousel'
 import Timeline from '../components/Timeline/Timeline'
+import BlogSection from '@/components/Portfolio/BlogSection'
+
 export default function Home() {
   return (
     <>
@@ -12,6 +14,7 @@ export default function Home() {
         <Skills />
         <Projects />
         <Timeline />
+        <BlogSection />
         <ReferenceCarousel />
         <Contact />
       </main>

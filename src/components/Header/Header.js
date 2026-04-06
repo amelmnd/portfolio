@@ -32,6 +32,9 @@ export default function Header() {
       <Link href='/#working' className={styles.link} onClick={closeMenu}>
         Expérience
       </Link>
+      <Link href='/#blog' className={styles.link} onClick={closeMenu}>
+        Blog
+      </Link>
       <Link href='/#ref' className={styles.link} onClick={closeMenu}>
         Références
       </Link>
