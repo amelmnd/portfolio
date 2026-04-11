@@ -4,7 +4,7 @@ import Projects from '../components/Projects/Projects'
 import Contact from '../components/Contact/Contact'
 import ReferenceCarousel from '../components/ReferenceCarousel/ReferenceCarousel'
 import Timeline from '../components/Timeline/Timeline'
-import BlogSection from '@/components/Portfolio/BlogSection'
+import BlogSection from '@/components/Blog/BlogSection'
 
 export default function Home() {
   return (
