@@ -12,6 +12,8 @@ export default function EditableProjectList() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [previews, setPreviews] = useState({});
+  const [projectImages, setProjectImages] = useState({});
+
   const [projectSkills, setProjectSkills] = useState({});
 
   // 🔹 Filtres
@@ -64,7 +66,6 @@ export default function EditableProjectList() {
 
   const matchesAll = (p, arr) => arr.every((s) => projectSkillSet(p).has(s));
 
-  // 🔹 Toutes les educations
   const allEducations = useMemo(() => {
     const set = new Set();
     projects.forEach((p) => {
@@ -116,55 +117,137 @@ export default function EditableProjectList() {
 
   // 🔹 Gestion édition/suppression reste identique
   const handleInputChange = (id, field, value) => {
-    setProjects((prev) => prev.map((p) => (p.id === id ? { ...p, [field]: value } : p)));
+    setProjects((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
+    );
   };
 
   const handleSkillChange = (projectId, skills) => {
     setProjectSkills((prev) => ({ ...prev, [projectId]: skills }));
   };
 
+  const handleImageChange = (projectId, file) => {
+    if (!file) return;
+
+    setProjectImages((prev) => ({
+      ...prev,
+      [projectId]: file,
+    }));
+
+    setPreviews((prev) => ({
+      ...prev,
+      [projectId]: URL.createObjectURL(file),
+    }));
+  };
+
+  const uploadImage = async (file) => {
+    if (!file) return '';
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append(
+      'upload_preset',
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    );
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.secure_url) return data.secure_url;
+
+    throw new Error(data.error?.message || 'Erreur upload Cloudinary');
+  };
+
   const handleSave = async (project) => {
     setSaving(true);
 
-    const { error } = await supabase
-      .from('projects')
-      .update({
-        title: project.title,
-        description: project.description,
-        imglink: project.imglink,
-        repourl: project.repourl,
-        demourl: project.demourl,
-        date: project.date,
-        fav: project.fav,
-        education_id: project.education_id,
-      })
-      .eq('id', project.id);
+    try {
+      let updatedImgLink = project.imglink || '';
 
-    if (error) {
-      alert('Erreur projet : ' + error.message);
-      setSaving(false);
-      return;
-    }
+      const newImageFile = projectImages[project.id];
+      if (newImageFile) {
+        updatedImgLink = await uploadImage(newImageFile);
+      }
 
-    await supabase.from('project_skills').delete().eq('project_id', project.id);
-    const currentSkills = projectSkills[project.id] || [];
-    for (const skill of currentSkills) {
-      await supabase.from('project_skills').insert({
-        project_id: project.id,
-        skill_id: skill.id,
+      const { error } = await supabase
+        .from('projects')
+        .update({
+          title: project.title,
+          description: project.description,
+          imglink: updatedImgLink,
+          repourl: project.repourl,
+          demourl: project.demourl,
+          date: project.date,
+          fav: project.fav,
+          education_id: project.education_id || null,
+        })
+        .eq('id', project.id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const { error: deleteSkillsError } = await supabase
+        .from('project_skills')
+        .delete()
+        .eq('project_id', project.id);
+
+      if (deleteSkillsError) {
+        throw new Error(deleteSkillsError.message);
+      }
+
+      const currentSkills = projectSkills[project.id] || [];
+      for (const skill of currentSkills) {
+        const { error: insertSkillError } = await supabase
+          .from('project_skills')
+          .insert({
+            project_id: project.id,
+            skill_id: skill.id,
+          });
+
+        if (insertSkillError) {
+          throw new Error(insertSkillError.message);
+        }
+      }
+
+      setProjectImages((prev) => {
+        const copy = { ...prev };
+        delete copy[project.id];
+        return copy;
       });
-    }
 
-    setEditingId(null);
-    await fetchProjects();
-    setSaving(false);
+      setPreviews((prev) => {
+        const copy = { ...prev };
+        delete copy[project.id];
+        return copy;
+      });
+
+      setEditingId(null);
+      await fetchProjects();
+    } catch (err) {
+      alert('Erreur projet : ' + err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Supprimer ce projet ?')) return;
+
     const { error } = await supabase.from('projects').delete().eq('id', id);
-    if (error) alert('Erreur : ' + error.message);
-    else fetchProjects();
+
+    if (error) {
+      alert('Erreur : ' + error.message);
+    } else {
+      fetchProjects();
+    }
   };
 
   if (loading) return <p>Chargement...</p>;
@@ -187,9 +270,8 @@ export default function EditableProjectList() {
             <button
               key={skill}
               type="button"
-              className={`${styles.chip} ${
-                selectedSkills.includes(skill) ? styles.chipActive : ''
-              }`}
+              className={`${styles.chip} ${selectedSkills.includes(skill) ? styles.chipActive : ''
+                }`}
               onClick={() => toggleSkill(skill)}
             >
               {skill}
@@ -223,7 +305,7 @@ export default function EditableProjectList() {
                 skills={projectSkills[project.id] || []}
                 onChange={handleInputChange}
                 onSkillChange={(skills) => handleSkillChange(project.id, skills)}
-                onImageChange={(file) => console.log(file)}
+                onImageChange={handleImageChange}
                 onSave={() => handleSave(project)}
                 onCancel={() => setEditingId(null)}
                 saving={saving}
