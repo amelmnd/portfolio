@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './ProjectEdit.module.css';
-import SkillSelector from '../SkillSelector/SkillSelector';
 import SkillEditor from '../SkillSelector/SkillEditor';
 
 export default function ProjectEdit({
@@ -34,7 +33,15 @@ export default function ProjectEdit({
     };
     fetchEducation();
   }, []);
-  
+
+  useEffect(() => {
+    setCharCount(project.description?.length || 0);
+  }, [project.description]);
+
+  useEffect(() => {
+    setLocalPreview(preview || project.imglink || '');
+  }, [preview, project.imglink]);
+
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
 
@@ -46,8 +53,8 @@ export default function ProjectEdit({
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageFileChange = (e) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
@@ -79,9 +86,8 @@ export default function ProjectEdit({
           maxLength={200}
         />
         <div
-          className={`${styles.charCounter} ${
-            charCount >= 200 ? styles.charLimitReached : ''
-          }`}
+          className={`${styles.charCounter} ${charCount >= 200 ? styles.charLimitReached : ''
+            }`}
         >
           {charCount}/200 caractères
         </div>
@@ -92,10 +98,9 @@ export default function ProjectEdit({
         <select
           className={styles.input}
           value={project.education_id || ''}
-          onChange={(e) => onChange(project.id, 'education_id', e.target.value)}
+          onChange={(e) => onChange(project.id, 'education_id', e.target.value || null)}
         >
-          <option value="">-- Sélectionner --</option>
-          <option> Projet perso</option>
+          <option value="">-- Sélectionner / Projet perso --</option>
           {educations.map((edu) => (
             <option key={edu.id} value={edu.id}>
               {edu.institution}
@@ -152,7 +157,7 @@ export default function ProjectEdit({
       <label className={styles.label}>
         Image :
         {localPreview ? (
-          <img src={localPreview} className={styles.image} alt={project.title} />
+          <img src={localPreview} className={styles.image} alt={project.title || 'Projet'} />
         ) : (
           <i className={styles.noImage}>Pas d’image</i>
         )}
@@ -160,7 +165,7 @@ export default function ProjectEdit({
           type="file"
           accept="image/*"
           className={styles.fileInput}
-          onChange={handleImageChange}
+          onChange={handleImageFileChange}
         />
       </label>
 
