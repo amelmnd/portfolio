@@ -40,6 +40,7 @@ export default function Hero({ width = 12, height = 22 }) {
 						alt="Portrait"
 						width="304"
 						height="304"
+						priority
 					/>
 				</div>
 			</div>
