@@ -37,7 +37,7 @@ export default function BlogSection() {
 				const allArticles = Array.isArray(data) ? data : [];
 
 				setTotalArticles(allArticles.length);
-				setArticles(allArticles.slice(0, 4));
+				setArticles(allArticles.slice(0, 3));
 			} catch (err) {
 				setError(err.message || 'Une erreur est survenue.');
 			} finally {

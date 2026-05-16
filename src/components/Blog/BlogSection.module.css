@@ -207,7 +207,7 @@
   transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 985px) {
   .blog {
     padding: 0 1rem;
     margin: 3rem auto;
@@ -219,12 +219,20 @@
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(260px, 85vw);
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x proximity;
   }
 
   .card {
     min-height: 340px;
     max-height: 400px;
+    scroll-snap-align: start;
   }
 
   .cardTitle {
