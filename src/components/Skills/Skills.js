@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import styles from "./Skills.module.css";
-import Link from "next/link";
-import Loader from '../Loader/Loader';
+import Loader from "../Loader/Loader";
 
 export default function Skills() {
   const [skills, setSkills] = useState([]);
@@ -15,41 +14,50 @@ export default function Skills() {
       setLoading(true);
 
       try {
-        // --- Skills projets ---
+        const { data: allDbSkills, error: allSkillsError } = await supabase
+          .from("skills")
+          .select("id, name, type, link");
+
+        if (allSkillsError) throw allSkillsError;
+
         const { data: projectSkills, error: projectError } = await supabase
           .from("project_skills")
           .select("skill:skills(id, name, type, link)");
+
         if (projectError) throw projectError;
 
-        // --- Skills work ---
         const { data: workSkills, error: workError } = await supabase
           .from("work_skills")
           .select("skill:skills(id, name, type, link)");
+
         if (workError) throw workError;
 
-        // --- Skills education ---
         const { data: eduSkills, error: eduError } = await supabase
           .from("education_skills")
           .select("skill:skills(id, name, type, link)");
+
         if (eduError) throw eduError;
 
         function annotateSkills(rows, origin) {
-          return (rows ?? []).map((row) => ({
-            ...row.skill,
-            origins: [origin],
-          }));
+          return (rows ?? [])
+            .filter((row) => row.skill)
+            .map((row) => ({
+              ...row.skill,
+              origins: [origin],
+            }));
         }
 
-        const allSkills = [
+        const linkedSkills = [
           ...annotateSkills(projectSkills, "Projet"),
           ...annotateSkills(workSkills, "Exp pro"),
           ...annotateSkills(eduSkills, "Formation"),
         ];
 
-        // Dédoublonnage et fusion des origines
         const uniqueSkillsMap = new Map();
-        allSkills.forEach((skill) => {
+
+        linkedSkills.forEach((skill) => {
           if (!skill) return;
+
           if (uniqueSkillsMap.has(skill.id)) {
             const existing = uniqueSkillsMap.get(skill.id);
             existing.origins = Array.from(
@@ -60,12 +68,38 @@ export default function Skills() {
           }
         });
 
-        const uniqueSkills = Array.from(uniqueSkillsMap.values());
+        // Tous les skills de type outils sont affichés,
+        // même s'ils ne sont pas liés à un projet / une exp pro / une formation
+        (allDbSkills ?? []).forEach((skill) => {
+          if (!skill) return;
 
-        // Filtre type valide
-        const filtered = uniqueSkills.filter(
-          (s) => s?.type && String(s.type).trim() !== ""
-        );
+          const normalizedType = String(skill.type || "")
+            .trim()
+            .toLowerCase();
+
+          const isTool =
+            normalizedType === "outils" ||
+            normalizedType === "outil" ||
+            normalizedType === "tools" ||
+            normalizedType === "tool";
+
+          if (!isTool) return;
+
+          if (!uniqueSkillsMap.has(skill.id)) {
+            uniqueSkillsMap.set(skill.id, {
+              ...skill,
+              origins: [],
+            });
+          }
+        });
+
+        const filtered = Array.from(uniqueSkillsMap.values())
+          .filter((s) => s?.type && String(s.type).trim() !== "")
+          .sort((a, b) =>
+            String(a.name || "").localeCompare(String(b.name || ""), "fr", {
+              sensitivity: "base",
+            })
+          );
 
         setSkills(filtered);
       } catch (err) {
@@ -81,8 +115,11 @@ export default function Skills() {
   if (loading) return <Loader />;
 
   const skillsByType = skills.reduce((acc, s) => {
-    if (!acc[s.type]) acc[s.type] = [];
-    acc[s.type].push(s);
+    const type = String(s.type || "").trim();
+
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(s);
+
     return acc;
   }, {});
 
@@ -91,13 +128,18 @@ export default function Skills() {
       <div className={styles.text}>
         <h2 className={styles.title}>Mes compétences</h2>
         <p className={styles.subtitle}>
-          Cette liste, non exhaustive, montre ce que je peux vraiment faire. C’est un aperçu de mes compétences vérifiables à travers mes projets (catalogue de projets à venir), mes formations et mes expériences professionnelles.        </p>
-        </div>
+          Cette liste, non exhaustive, montre ce que je peux vraiment faire.
+          C’est un aperçu de mes compétences vérifiables à travers mes projets
+          (catalogue de projets à venir), mes formations et mes expériences
+          professionnelles.
+        </p>
+      </div>
 
       <div className={styles.columnsContainer}>
         {Object.entries(skillsByType).map(([type, group]) => (
           <div key={type} className={styles.column}>
             <h3 className={styles.typeTitle}>{type}</h3>
+
             {group.map((skill) => (
               <div key={skill.id} className={styles.skillItem}>
                 {skill.link && (
@@ -109,11 +151,15 @@ export default function Skills() {
                     loading="lazy"
                   />
                 )}
+
                 <div className={styles.skillBoxName}>
                   <p className={styles.skillName}>{skill.name}</p>
-                  <p className={styles.skillOrigins}>
-                    ({skill.origins.join(", ")})
-                  </p>
+
+                  {skill.origins.length > 0 && (
+                    <p className={styles.skillOrigins}>
+                      ({skill.origins.join(", ")})
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
