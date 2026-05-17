@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './ManageSkills.module.css';
 
@@ -16,11 +16,11 @@ const SKILL_TYPES = [
   'Autre',
 ];
 
-export default function SkillsGrid() {
+export default function ManageSkills() {
   const [skills, setSkills] = useState([]);
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [selectedType, setSelectedType] = useState('Tous');
 
   useEffect(() => {
     fetchSkills();
@@ -28,11 +28,17 @@ export default function SkillsGrid() {
 
   async function fetchSkills() {
     setLoading(true);
+
     const { data, error } = await supabase
       .from('skills')
       .select('*')
-      .order('name');
-    if (!error) setSkills(data || []);
+      .order('type', { ascending: true })
+      .order('name', { ascending: true });
+
+    if (!error) {
+      setSkills(data || []);
+    }
+
     setLoading(false);
   }
 
@@ -46,14 +52,19 @@ export default function SkillsGrid() {
 
     const res = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      { method: 'POST', body: formData }
+      {
+        method: 'POST',
+        body: formData,
+      }
     );
+
     const data = await res.json();
     return data.secure_url;
   }
 
   async function saveSkill() {
     if (!editing) return;
+
     let imageLink = editing.link;
 
     if (editing.file) {
@@ -73,105 +84,169 @@ export default function SkillsGrid() {
     fetchSkills();
   }
 
+  const filteredSkills = useMemo(() => {
+    if (selectedType === 'Tous') return skills;
+    return skills.filter((skill) => skill.type === selectedType);
+  }, [skills, selectedType]);
+
+  const groupedSkills = useMemo(() => {
+    return filteredSkills.reduce((acc, skill) => {
+      const type = skill.type || 'Autre';
+
+      if (!acc[type]) {
+        acc[type] = [];
+      }
+
+      acc[type].push(skill);
+      return acc;
+    }, {});
+  }, [filteredSkills]);
+
   if (loading) return <p>Chargement…</p>;
 
   return (
     <div className={styles.container}>
-      <div className={styles.grid}>
-        {skills.map((sk) => (
-          <div key={sk.id} className={styles.card}>
-            {editing?.id === sk.id ? (
-              <div className={styles.editForm}>
-                <input
-                  type='text'
-                  className={styles.input}
-                  value={editing.name}
-                  onChange={(e) =>
-                    setEditing({ ...editing, name: e.target.value })
-                  }
-                />
-                <select
-                  className={styles.input}
-                  value={editing.type}
-                  onChange={(e) =>
-                    setEditing({ ...editing, type: e.target.value })
-                  }
-                >
-                  <option value=''>-- Choisir type --</option>
-                  {SKILL_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
+      <div className={styles.filters}>
+        <label className={styles.filterLabel}>Filtrer par catégorie :</label>
 
-                <div className={styles.previewWrapper}>
-                  {editing.file ? (
-                    <img
-                      src={URL.createObjectURL(editing.file)}
-                      alt='preview'
-                      className={styles.image}
-                    />
-                  ) : editing.link ? (
-                    <img
-                      src={editing.link}
-                      alt='preview'
-                      className={styles.image}
-                    />
+        <select
+          className={styles.filterSelect}
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="Tous">Toutes les catégories</option>
+
+          {SKILL_TYPES.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {Object.keys(groupedSkills).length === 0 ? (
+        <p className={styles.empty}>Aucune compétence trouvée.</p>
+      ) : (
+        Object.entries(groupedSkills).map(([type, skillsByType]) => (
+          <section key={type} className={styles.categorySection}>
+            <h3 className={styles.categoryTitle}>{type}</h3>
+
+            <div className={styles.grid}>
+              {skillsByType.map((sk) => (
+                <div key={sk.id} className={styles.card}>
+                  {editing?.id === sk.id ? (
+                    <div className={styles.editForm}>
+                      <input
+                        type="text"
+                        className={styles.input}
+                        value={editing.name}
+                        onChange={(e) =>
+                          setEditing({
+                            ...editing,
+                            name: e.target.value,
+                          })
+                        }
+                      />
+
+                      <select
+                        className={styles.input}
+                        value={editing.type}
+                        onChange={(e) =>
+                          setEditing({
+                            ...editing,
+                            type: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">-- Choisir type --</option>
+
+                        {SKILL_TYPES.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+
+                      <div className={styles.previewWrapper}>
+                        {editing.file ? (
+                          <img
+                            src={URL.createObjectURL(editing.file)}
+                            alt="preview"
+                            className={styles.image}
+                          />
+                        ) : editing.link ? (
+                          <img
+                            src={editing.link}
+                            alt="preview"
+                            className={styles.image}
+                          />
+                        ) : (
+                          <div className={styles.noImage}>Pas d'image</div>
+                        )}
+                      </div>
+
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className={styles.input}
+                        onChange={(e) =>
+                          setEditing({
+                            ...editing,
+                            file: e.target.files[0],
+                          })
+                        }
+                      />
+
+                      <div className={styles.actions}>
+                        <button onClick={saveSkill} className={styles.saveBtn}>
+                          💾 Sauver
+                        </button>
+
+                        <button
+                          onClick={() => setEditing(null)}
+                          className={styles.cancelBtn}
+                        >
+                          ✖ Annuler
+                        </button>
+                      </div>
+                    </div>
                   ) : (
-                    <div className={styles.noImage}>Pas d'image</div>
+                    <div className={styles.viewCard}>
+                      <p className={styles.name}>{sk.name}</p>
+                      <p className={styles.type}>{sk.type || '—'}</p>
+
+                      {sk.link ? (
+                        <img
+                          src={sk.link}
+                          alt={sk.name}
+                          className={styles.image}
+                        />
+                      ) : (
+                        <div className={styles.noImage}>Pas d'image</div>
+                      )}
+
+                      <button
+                        onClick={() =>
+                          setEditing({
+                            id: sk.id,
+                            name: sk.name || '',
+                            type: sk.type || '',
+                            link: sk.link || '',
+                            file: null,
+                          })
+                        }
+                        className={styles.editBtn}
+                      >
+                        ✏️ Éditer
+                      </button>
+                    </div>
                   )}
                 </div>
-
-                <input
-                  type='file'
-                  accept='image/*'
-                  className={styles.input}
-                  onChange={(e) =>
-                    setEditing({ ...editing, file: e.target.files[0] })
-                  }
-                />
-
-                <div className={styles.actions}>
-                  <button onClick={saveSkill} className={styles.saveBtn}>
-                    💾 Sauver
-                  </button>
-                  <button
-                    onClick={() => setEditing(null)}
-                    className={styles.cancelBtn}
-                  >
-                    ✖ Annuler
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.viewCard}>
-                <p className={styles.name}>{sk.name}</p>
-                <p className={styles.type}>{sk.type || '—'}</p>
-                {sk.link ? (
-                  <img src={sk.link} alt={sk.name} className={styles.image} />
-                ) : (
-                  <div className={styles.noImage}>Pas d'image</div>
-                )}
-                <button
-                  onClick={() =>
-                    setEditing({
-                      id: sk.id,
-                      name: sk.name || '',
-                      type: sk.type || '',
-                      link: sk.link || '',
-                      file: null,
-                    })
-                  }
-                  className={styles.editBtn}
-                >
-                  ✏️ Éditer
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+              ))}
+            </div>
+          </section>
+        ))
+      )}
     </div>
   );
 }
