@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import styles from '../../AddProject.module.css';
 import SkillEditor from '@/components/SkillSelector/SkillEditor';
-import SkillSelector from '@/components/SkillSelector/SkillSelector';
 import ReturnButton from '@/components/ReturnButton/ReturnButton';
 
 export default function AddEducation({ onAdded, onBack }) {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     institution: '',
     studytype: '',
@@ -26,6 +28,7 @@ export default function AddEducation({ onAdded, onBack }) {
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
+
     setForm((f) => ({
       ...f,
       [name]: type === 'checkbox' ? checked : value,
@@ -34,6 +37,9 @@ export default function AddEducation({ onAdded, onBack }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (loading) return;
+
     setLoading(true);
     setErrorMsg('');
 
@@ -58,26 +64,33 @@ export default function AddEducation({ onAdded, onBack }) {
 
       if (error) throw error;
 
-      if (selectedSkills.length) {
-        for (const skill of selectedSkills) {
-          await supabase.from('education_skills').insert({
-            education_id: data.id,
-            skill_id: skill.id,
-          });
-        }
+      if (selectedSkills.length > 0) {
+        const skillsToInsert = selectedSkills.map((skill) => ({
+          education_id: data.id,
+          skill_id: skill.id,
+        }));
+
+        const { error: skillsError } = await supabase
+          .from('education_skills')
+          .insert(skillsToInsert);
+
+        if (skillsError) throw skillsError;
       }
 
       if (onAdded) onAdded();
-    } catch (error) {
-      setErrorMsg(error.message);
-    }
 
-    setLoading(false);
+      router.push('/dashboard/education');
+      router.refresh();
+    } catch (error) {
+      setErrorMsg(error.message || 'Une erreur est survenue.');
+      setLoading(false);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <ReturnButton routeName={'/dashboard/education'} />
+      <ReturnButton routeName="/dashboard/education" />
+
       <h2 className={styles.title}>Ajouter une formation</h2>
 
       <label className={styles.label}>
@@ -190,6 +203,7 @@ export default function AddEducation({ onAdded, onBack }) {
         <button type="submit" disabled={loading} className={styles.submitBtn}>
           {loading ? 'Enregistrement...' : 'Ajouter'}
         </button>
+
         <button
           type="button"
           onClick={onBack}
