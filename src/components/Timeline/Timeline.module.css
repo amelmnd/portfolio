@@ -167,6 +167,12 @@
   font-style: oblique;
 }
 
+.timelineSummary {
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
 .work .timelinePeriod {
   background-color: var(--card-bg);
 }
@@ -309,7 +315,8 @@
   }
 
   .timelineSubtitle,
-  .timelineLocation {
+  .timelineLocation,
+  .timelineSummary {
     font-size: 0.9rem;
   }
 

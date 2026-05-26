@@ -20,10 +20,12 @@ const TimelineItem = ({
   startDate,
   endDate,
   location,
+  summary,
   studyType,
   type,
   tagLabel,
   skills,
+
 }) => (
   <div className={`${styles.timelineContent} ${styles[type]}`}>
     <div className={styles.timelineContentInside}>
@@ -35,6 +37,7 @@ const TimelineItem = ({
       <p className={styles.timelineLocation}>{location}</p>
       <p className={styles.timelineTag}>{tagLabel}</p>
       {studyType && <p className={styles.timelineTag}>{studyType}</p>}
+      {summary && <p className={styles.timelineSummary}>{summary}</p>}
 
       {skills?.length > 0 && (
         <div className={styles.timelineSkills}>
@@ -124,18 +127,21 @@ export default function Timeline() {
     skills: item.work_skills?.map((ws) => ws.skill) || [],
   }));
 
-  const educationEvents = (education || []).map((item) => ({
-    ...item,
-    type: "education",
-    tagLabel: "Formation",
-    title: item.studyType,
-    subtitle: item.institution,
-    startDate: item.startDate,
-    endDate: item.endDate || "...",
-    location: item.location || "—",
-    studyType: item.studyType,
-    skills: item.education_skills?.map((es) => es.skill) || [],
-  }));
+  const educationEvents = (education || []).map((item) => {
+    const studyType = item.studyType || item.studytype || "";
+
+    return {
+      ...item,
+      type: "education",
+      tagLabel: "Formation",
+      title : item.institution,
+      subtitle: studyType || item.area || item.institution,
+      startDate: item.startDate,
+      endDate: item.endDate || "...",
+      location: item.location || "",
+      skills: item.education_skills?.map((es) => es.skill) || [],
+    };
+  });
 
   const allEvents = [...workEvents, ...educationEvents].sort(
     (a, b) => new Date(b.startDate) - new Date(a.startDate)
